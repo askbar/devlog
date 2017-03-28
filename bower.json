@@ -1,0 +1,32 @@
+{
+  "name": "devlog",
+  "version": "0.0.1",
+  "authors": [
+    "Julian Pereira <ln0@topdanmark.dk>",
+    "Ask Joseph <syj@topdanmark.dk>"
+  ],
+  "description": "Devlog",
+  "keywords": [
+    "devlog"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-sass": "~3.3.7",
+    "moment": "~2.18.1",
+    "lodash": "~4.17.4",
+    "angular": "~1.6.3",
+    "angular-ui-router": "~0.4.2",
+    "angular-sanitize": "~1.6.3",
+    "angular-resource": "~1.6.3",
+    "ngstorage": "~0.3.11",
+    "angular-bootstrap": "~2.5.0"
+  }
+}

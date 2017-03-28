@@ -1,0 +1,50 @@
+{
+  "name": "devlog",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Devlog",
+  "keywords": [],
+  "scripts": {
+    "debug": "node debug app.js",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "core-js": "^2.4.1",
+    "grunt": "1.0.1",
+    "grunt-angular-templates": "^1.1.0",
+    "grunt-bower": "^0.21.4",
+    "grunt-contrib-clean": "1.0.0",
+    "grunt-contrib-coffee": "1.0.0",
+    "grunt-contrib-concat": "1.0.1",
+    "grunt-contrib-copy": "1.0.0",
+    "grunt-contrib-cssmin": "1.0.1",
+    "grunt-contrib-jst": "1.0.0",
+    "grunt-contrib-less": "1.3.0",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "1.0.1",
+    "grunt-contrib-watch": "1.0.0",
+    "grunt-ng-annotate": "^3.0.0",
+    "grunt-sails-linker": "~0.10.1",
+    "grunt-sync": "0.5.2",
+    "include-all": "^1.0.0",
+    "ng-annotate": "^1.2.1",
+    "node-watch": "^0.5.2",
+    "pug": "^2.0.0-beta11",
+    "rc": "1.0.1",
+    "sails": "~0.12.13",
+    "sails-disk": "~0.10.9"
+  },
+  "devDependencies": {
+    "grunt-sass": "^2.0.0",
+    "load-grunt-tasks": "^3.5.2",
+    "node-sass": "^4.5.1",
+    "nodemon": "^1.11.0"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/askbar/devlog.git"
+  },
+  "author": "Julian Pereira",
+  "license": "MIT"
+}
