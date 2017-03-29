@@ -2,7 +2,7 @@
 A Sailsjs app
 
 ## Installation
-Ensure that you have (SailsJS)[http://sailsjs.com/]
+Ensure that you have [SailsJS](http://sailsjs.com/)
 Run `npm install` followed by`bower install`
 
 ## Running the server
