@@ -20,7 +20,8 @@ module.exports = function(grunt) {
     assets: {
 
       // Assets to watch:
-      files: ['assets/**/*', 'tasks/pipeline.js', '!**/node_modules/**'],
+      // Exclude pipeline as it will be watched by nodemon
+      files: ['assets/**/*', '!tasks/pipeline.js', '!**/node_modules/**'],
 
       // When assets are changed:
       tasks: ['syncAssets' , 'linkAssets' ]

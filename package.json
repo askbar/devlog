@@ -5,8 +5,8 @@
   "description": "Devlog",
   "keywords": [],
   "scripts": {
-    "debug": "node debug app.js",
-    "start": "node app.js"
+    "debug": "nodemon --debug app.js",
+    "start": "nodemon app.js"
   },
   "dependencies": {
     "core-js": "^2.4.1",
@@ -28,7 +28,6 @@
     "grunt-sync": "0.5.2",
     "include-all": "^1.0.0",
     "ng-annotate": "^1.2.1",
-    "node-watch": "^0.5.2",
     "pug": "^2.0.0-beta11",
     "rc": "1.0.1",
     "sails": "~0.12.13",

@@ -1,15 +1,23 @@
-var watch = require('node-watch');
+var chokidar = require('chokidar');
+var watcher = chokidar.watch('D:\\Data\\Typo3_Sites\\mit_topdanmark_dk\\typo3temp', {
+	ignored: /^\./, 
+	persistent: true
+});
 
 module.exports = {
 	index: function(req, res) {
 
-		console.log('index action of homepage!');
+	watcher
+  	.on('add', function(path) {
+  		console.log('File', path, 'has been added');
+  	})
+  	.on('change', function(path) {
+  		console.log('File', path, 'has been changed');
+  	})
+  	.on('unlink', function(path) {
+  		console.log('File', path, 'has been removed');
+  	});
 
-		var watcher = watch('D:\\Data\\Typo3_Sites\\mit_topdanmark_dk\\typo3.log', { recursive: true });
-		// watcher.on('change', function(evt, name) {
-		// 	console.log(name, ' changed.');
-		// });
-		 
 		res.status(200);
 
 		return res.view('homepage');

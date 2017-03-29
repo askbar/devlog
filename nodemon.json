@@ -1,0 +1,4 @@
+{
+  "verbose": false,
+  "ignore": [".tmp/*", "bower_components/*", "node_modules/*", "assets/*"]
+}
