@@ -1,0 +1,10 @@
+<div class='col-md-12'>
+	<h3>Profiles</h3>
+</div>
+
+<div class='col-md-12'>
+	<ul ng-if='profiles.length > 0' class="list-group">
+	  <li ng-repeat="profile in profiles" class="list-group-item">Cras justo odio</li>
+	</ul>
+	<p>No profiles found. <a ui-sref='.create'>Create one.</a></p>
+</div>

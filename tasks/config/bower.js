@@ -33,6 +33,12 @@ module.exports = function(grunt) {
                     'ui-bootstrap.js',
                     'ui-bootstrap-tpls.js'
                 ]
+            },
+            'angular-file-upload': {
+              keepExpandedHierarchy: false,
+              files: [
+                'dist/angular-file-upload.js'
+              ]
             }
         }
       }

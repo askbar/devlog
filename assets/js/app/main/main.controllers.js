@@ -4,6 +4,7 @@ angular.module('devlog.main.controllers', [])
     $log.debug('MainController');
 })
 
-.controller('HeaderController', function($log, $scope) {
-    $log.debug('HeaderController');
+.controller('HeaderController', function($log, $scope, $state) {
+
+
 });

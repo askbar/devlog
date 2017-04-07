@@ -12,7 +12,8 @@ angular.module('devlog', [
 
   // App modules
   'devlog.main',
-  'devlog.dashboard'
+  'devlog.dashboard',
+  'devlog.profile'
 
 ])
 

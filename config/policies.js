@@ -51,6 +51,10 @@ module.exports.policies = {
 
   TestController: {
     '*': true
+  },
+
+  ProfileController: {
+    '*': true
   }
 
 };
