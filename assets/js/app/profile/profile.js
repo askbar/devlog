@@ -12,9 +12,6 @@ angular.module('devlog.profile', [
         parent: 'devlog',
         params: {},
         resolve: {
-          _profiles: ['$profileApi', function($profileApi) {
-            return $profileApi.query();
-          }]
         },
         views: {
           'content@devlog': {

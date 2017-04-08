@@ -1,15 +1,13 @@
 module.exports = {
 	attributes: {
-		// profile id
-		id: {
+		// profile name
+		name: {
 			type: 'string',
 			unique: true,
 			required: true
 		},
-		folders: {
-			type: 'array'
-		},
-		files: {
+		// an array of file path locations to watch in this machine
+		paths: {
 			type: 'array'
 		}
 	}

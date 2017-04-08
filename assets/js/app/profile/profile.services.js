@@ -1,9 +1,10 @@
 angular.module('devlog.profile.services', [])
 
-.provider('$profileApi', function() {
+.provider('Profile', function() {
   return {
     $get: function($resource) {
-      return $resource('profiles');
+      var Profile = $resource('profiles');
+      return Profile;
     }
   };
 });
