@@ -1,0 +1,34 @@
+<form method='PUT' ng-submit="edit()" autocomplete="off">
+  <div class="modal-header">
+    <h3 class="modal-title" id="modal-title">Edit profile {{formModel.name}}</h3>
+  </div>
+  <div class="modal-body" id="modal-body">
+    <input type="hidden" ng-model='formModel.id' name='id' id='id'>
+    <div class='form-group'>
+      <label for="name">Profile name</label>
+      <input type="text" class="form-control" id="name" name='name' ng-model='formModel.name' placeholder="Profile name">
+    </div>
+    <div ng-repeat='path in formModel.paths track by $index' class='form-group'>
+      <label for='files'>File path {{$index + 1 }}</label>
+      <div class='row'>
+        <div class='col-xs-8'>
+          <input type='text' ng-model='formModel.paths[$index]' class='form-control' id='files' name='files' placeholder='File Path'>
+        </div>
+        <div class='col-xs-4'>
+          <button type='button' class='btn btn-danger' ng-click='removePath(formModel.paths[$index])'>
+            <span class='glyphicon glyphicon-minus'></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class='form-group'>
+      <button type="button" class='btn btn-default' ng-click="addPath()">
+        <span class='glyphicon glyphicon-plus'></span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+    <input type='submit' class="btn btn-primary" value='Edit'>
+  </div>
+</form>
