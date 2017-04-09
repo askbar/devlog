@@ -18,10 +18,10 @@
 					<p ng-repeat='path in profile.paths'>{{path}}</p>
 				</td>
 				<td>
-					<button type='button' class='btn btn-primary'>
+					<button type='button' ng-click='edit(profile)' class='btn btn-primary'>
 						<span class='glyphicon glyphicon-edit'></span>
 					</button>
-					<button type='button' class='btn btn-danger'>
+					<button type='button' ng-click='delete(profile)' class='btn btn-danger'>
 						<span class='glyphicon glyphicon-trash'></span>
 					</button>
 				</td>

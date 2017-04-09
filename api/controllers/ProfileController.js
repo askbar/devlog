@@ -3,30 +3,24 @@ var _ = require('lodash');
 module.exports = {
 
     find: function(req, res) {
-    	sails.log.debug('find all profiles');
     	Profile.find().exec(function(err, profiles) {
-			return res.json(profiles);
+				return res.json(200, profiles);
     	});
     },
 
     findOne: function(req, res) {
-    	sails.log('find one profile by id', req.param('id'));
-    	Profile.findOne({ name:req.param('id') }).exec(function (err, profile) {
+    	Profile.findOne({ id: req.param('id') }).exec(function (err, profile) {
     	  if (err) {
     	    return res.json(500, err);
     	  }
     	  if (!profile) {
-    	    return res.json(500, { message: 'Could not find , sorry.' });
+    	    return res.json(500, { message: 'Could not find profile with id ' + req.param('id') });
     	  }
     	  return res.json(200, profile);
     	});
     },
 
     create: function(req, res) {
-
-			console.log('create profile with params', req.allParams());
-			console.log('profile name', req.param('name'));
-
 			Profile.findOne({
 				name: req.param('name')
 			}).exec(function(err, profile) {
@@ -50,11 +44,29 @@ module.exports = {
     },
 
     update: function(req, res) {
-
+			Profile.update({
+				id: req.param('id')
+			}, req.allParams()).exec(function(err, profile) {
+				if (err) {
+					return res.json(500, err);
+				}
+				return res.json(200, {
+					message: 'updated profile with id ' + req.param('id')
+				});
+			});
     },
 
     destroy: function(req, res) {
+			Profile.destroy({
+				id: req.param('id')
+			}).exec(function(err) {
+				if (err) {
+					return res.json(500, err);
+				}
+				return res.json(200, {
+					message: 'deleted profile with id ' + req.param('id')
+				});
+			});
 
     }
-
 };

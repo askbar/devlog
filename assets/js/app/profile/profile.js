@@ -4,13 +4,17 @@ angular.module('devlog.profile', [
   'devlog.profile.services'
 ])
 
-.config(function($stateProvider) {
+  .config(function ($stateProvider) {
 
     $stateProvider
       .state('profile', {
         url: '/profile',
         parent: 'devlog',
-        params: {},
+        params: {
+          profile: {
+            value: null
+          }
+        },
         resolve: {
         },
         views: {
@@ -23,20 +27,51 @@ angular.module('devlog.profile', [
 
       .state('profile.create', {
         url: '/create',
-        onEnter: ['$uibModal', '$state', function($uibModal, $state) {
-            $uibModal.open({
-              templateUrl: 'assets/js/app/profile/templates/modals/create',
-              controller: 'ProfileCreateController'
-            }).result.then(function() {
-              $state.go('^');
-            }, function() {
-              $state.go('^');
+        onEnter: ['$uibModal', '$state', function ($uibModal, $state) {
+          $uibModal.open({
+            templateUrl: 'assets/js/app/profile/templates/modals/create',
+            controller: 'ProfileCreateController'
+          }).result.then(function (result) {
+            $state.go('^', {
+              profile: result.profile
             });
+          }, function () {
+            $state.go('^');
+          });
         }],
+      })
+
+      .state('profile.edit', {
+        url: '/edit/:id',
+        params: {
+          id: {
+            value: null
+          }
+        },
+        onEnter: ['$uibModal', '$state', '$stateParams', function ($uibModal, $state, $stateParams) {
+          var profileId = $stateParams.id;
+          $uibModal.open({
+            templateUrl: 'assets/js/app/profile/templates/modals/edit',
+            controller: 'ProfileEditController',
+            resolve: {
+              _profile: ['Profile', function (Profile) {
+                return Profile.get({
+                  id: profileId
+                }).$promise;
+              }]
+            }
+          }).result.then(function (result) {
+            $state.go('^', {
+              profile: result.profile
+            });
+          }, function () {
+            $state.go('^');
+          });
+        }]
       });
 
-})
+  })
 
-.run(function() {
+  .run(function () {
 
-});
+  });
