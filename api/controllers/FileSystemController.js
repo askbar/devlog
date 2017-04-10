@@ -63,8 +63,6 @@ module.exports = {
     		_p = id;
     	}
 
-    	console.log('tree ', _p);
-
     	async.waterfall([
     		async.apply(_process, _p)
 		], function(err, results) {

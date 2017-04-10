@@ -15,7 +15,7 @@ angular.module('devlog.main.directives', [])
 
         	scope.fetch = function(id) {
         		FileSystem.tree.query({
-        			id: FileSystemUtils.escapePath(id)
+        			id: id
         		}).$promise.then(function(result) {
         			scope.result = result;
         			scope.result.files = _.sortBy(scope.result.files, 'isDirectory');
@@ -26,7 +26,7 @@ angular.module('devlog.main.directives', [])
 
         	scope.up = function() {
         		FileSystem.up.query({
-        			id: FileSystemUtils.escapePath(scope.result.currentDir)
+        			id: scope.result.currentDir
         		}).$promise.then(function(result) {
         			scope.result = result;
         			scope.result.files = _.sortBy(scope.result.files, 'isDirectory');
@@ -54,7 +54,7 @@ angular.module('devlog.main.directives', [])
         		scope.selectedPath = id;
         	};
 
-        	scope.fetch();
+        	scope.fetch(scope.selectedPath);
         }
     };
 }]);
