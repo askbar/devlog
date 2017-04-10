@@ -20,6 +20,10 @@
           </button>
         </div>
       </div>
+      <span class='help-block'>Type the path of the file/folder to watch or select from the file browser below.</span>
+      <div class='well'>
+          <file-browser selected-path='formModel.paths[$index]'></file-browser>
+      </div>
     </div>
     <div class='form-group'>
       <button type="button" class='btn btn-info' ng-click="addPath()">

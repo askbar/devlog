@@ -60,7 +60,7 @@ module.exports = {
     		_p = path.resolve(__dirname, '../..');
     	}
     	else {
-    		_p = id;
+			_p = path.dirname(id);
     	}
 
     	async.waterfall([

@@ -24,6 +24,6 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
-        <input type='submit' class="btn btn-success" value='Create'>        
+        <input type='submit' ng-disabled='!formModel.name' class="btn btn-success" value='Create'>        
     </div>
 </form>
