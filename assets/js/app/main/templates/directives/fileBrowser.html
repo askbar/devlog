@@ -1,39 +1,43 @@
 <div class='row'>
 	<div class='col-xs-12'>
-		<form class='form-inline'' ng-submit='navigate()''>
-			<button type='button' class='btn btn-default' ng-click='up()'>
-				<span class='glyphicon glyphicon-triangle-top'></span>
-			</button>
-			<div class='form-group'>
-				<input type='text' id='fileBrowserCurrentDir' class='form-control' ng-model='result.currentDir'/>
-			</div>
-		  	<button type="submit" class="btn btn-default">
-		  		<span class='glyphicon glyphicon-triangle-right'></span>
-		  	</button>
-		  	<button type="submit" ng-click='add(result.currentDir)' class="btn btn-default">
-		  		<span class='glyphicon glyphicon-search'></span>
-		  	</button>
-		</form>
+		<div class="panel panel-default">
+		  <div class="panel-body">
+			<form class='form-inline'' ng-submit='navigate()''>
+				<button type='button' class='btn btn-default' ng-click='up()'>
+					<span class='glyphicon glyphicon-new-window'></span>
+				</button>
+				<div class='form-group'>
+					<input type='text' id='fileBrowserCurrentDir' class='form-control' ng-model='result.currentDir'/>
+				</div>
+			  	<button type="submit" class="btn btn-default">
+			  		<span class='glyphicon glyphicon-search'></span>
+			  	</button>
+			</form>
+		  </div>
+		</div>
 	</div>
 	<div class='col-xs-12'>
 		<table class="table table-condensed">
 			<thead>
 				<tr>
+					<th></th>
 					<th>Name</th>
-					<th>Type</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr ng-repeat='file in result.files track by $index'>
 					<td>
+						<span ng-if='file.isDirectory' class='glyphicon glyphicon-folder-close'></span>
+						<span ng-if='!file.isDirectory' class='glyphicon glyphicon-file'></span>
+					</td>
+					<td>
 						<a ng-if='file.isDirectory' href='#' ng-click='fetch(file.id)'>{{file.text}}</a>
 						<span ng-if='!file.isDirectory'>{{file.text}}</span>
 					</td>	
-					<td>{{file.isDirectory ? 'Folder': 'File'}}
 					<td>
 						<button type='button' ng-click='add(file.id)' class='btn btn-default'>
-							Watch this {{file.isDirectory ? 'folder': 'file'}}
+							Watch!
 						</button>
 					</td>
 				</tr>
