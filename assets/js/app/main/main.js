@@ -1,5 +1,6 @@
 angular.module('devlog.main', [
   'devlog.main.controllers',
+  'devlog.main.directives',
   'devlog.main.services'
 ])
 

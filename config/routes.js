@@ -47,9 +47,13 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  'GET /test': {
-    controller: 'TestController',
-    action: 'test'
+  'GET /api/tree': {
+    controller: 'FileSystemController',
+    action: 'tree'
+  },
+  'GET /api/tree/up': {
+    controller: 'FileSystemController',
+    action: 'up'
   }
 
 

@@ -35,6 +35,7 @@ angular.module('devlog.profile.controllers', [])
     ['$scope', 'lodash', 'Profile', '$uibModalInstance',
         function ($scope, _, Profile, $uibModalInstance) {
 
+            
             $scope.formModel = {
                 id: '',
                 name: '',
@@ -56,6 +57,11 @@ angular.module('devlog.profile.controllers', [])
                 }, function (response) {
                     console.log('error', response);
                 });
+            };
+
+            $scope.nodeSelected = function(e, data) {
+                var _l = data.node.attrs;
+                console.log('_l', _l);
             };
 
             $scope.cancel = function () {

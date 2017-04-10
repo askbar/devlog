@@ -1,5 +1,4 @@
 angular.module('devlog.profile', [
-  'angularFileUpload',
   'devlog.profile.controllers',
   'devlog.profile.services'
 ])
@@ -15,8 +14,7 @@ angular.module('devlog.profile', [
             value: null
           }
         },
-        resolve: {
-        },
+        resolve: {},
         views: {
           'content@devlog': {
             templateUrl: 'assets/js/app/profile/templates/profile',
@@ -32,9 +30,7 @@ angular.module('devlog.profile', [
             templateUrl: 'assets/js/app/profile/templates/modals/create',
             controller: 'ProfileCreateController'
           }).result.then(function (result) {
-            $state.go('^', {
-              profile: result.profile
-            });
+            $state.go('^', result);
           }, function () {
             $state.go('^');
           });
@@ -61,9 +57,7 @@ angular.module('devlog.profile', [
               }]
             }
           }).result.then(function (result) {
-            $state.go('^', {
-              profile: result.profile
-            });
+            $state.go('^', result);
           }, function () {
             $state.go('^');
           });

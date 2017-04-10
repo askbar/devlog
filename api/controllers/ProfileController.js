@@ -2,6 +2,16 @@ var _ = require('lodash');
 
 module.exports = {
 
+	_config: {
+		actions: true,
+		rest: true,
+		pluralize: true
+	},
+
+    //=======================================================================
+	// Profile CRUD
+    //=======================================================================
+
     find: function(req, res) {
     	Profile.find().exec(function(err, profiles) {
 				return res.json(200, profiles);
@@ -69,4 +79,5 @@ module.exports = {
 			});
 
     }
+
 };

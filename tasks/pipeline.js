@@ -40,7 +40,8 @@ var jsFilesToInject = [
   'js/vendor/ui-bootstrap.js',
   'js/vendor/ui-bootstrap-tpls.js',
   'js/vendor/angular-ui-router.js',
-  'js/vendor/angular-file-upload.js',
+  'js/vendor/jstree.js',
+  'js/vendor/jsTree.directive.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

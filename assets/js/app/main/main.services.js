@@ -27,6 +27,7 @@ angular.module('devlog.main.services', [])
     return {
       $get: function($window) {
         var $ = $window.jQuery.noConflict();
+        $window.$ = $;
         return ($);
       }
     };
@@ -43,3 +44,35 @@ angular.module('devlog.main.services', [])
     };
   }
 ])
+
+.provider('FileSystem', function() {
+  return {
+    $get: function($resource) {
+      return {
+        tree: $resource('api/tree', null, {
+          query: {
+            method: 'GET',
+            isArray: false
+          }
+        }),
+        up: $resource('api/tree/up', null, {
+          query: {
+            method: 'GET',
+            isArray: false
+          }
+        })
+      };
+    }
+  };
+})
+
+.factory('FileSystemUtils', ['lodash', function(_) {
+  return {
+    escapePath: function(path) {
+      if (_.isEmpty(path)) {
+        return path;
+      }
+      return path.replace(/\\/g, "\\\\");
+    }
+  };
+}]);

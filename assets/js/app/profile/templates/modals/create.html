@@ -9,17 +9,21 @@
                 <input type="text" class="form-control" id="name" name='name' ng-model='formModel.name' placeholder="Profile name">
             </div>
             <div ng-repeat='path in formModel.paths track by $index' class='form-group'>
-                <label for='files'>File path {{$index + 1 }}</label>
+                <label for='files'>Path {{$index + 1 }}</label>
                 <input type='text' ng-model='formModel.paths[$index]' class='form-control' id='files' name='files' placeholder='File Path'>
+                <span class='help-block'>Type the path of the file/folder to watch or select from the file browser below.</span>
+                <div class='well'>
+                    <file-browser selected-path='formModel.paths[$index]'></file-browser>
+                </div>
             </div>
             <div class='form-group'>
-                <button type="button" class='btn btn-default' ng-click="addPath()">
+                <button type="button" class='btn btn-info' ng-click="addPath()">
                     <span class='glyphicon glyphicon-plus'></span>
                 </button>
             </div>
     </div>
     <div class="modal-footer">
         <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
-        <input type='submit' class="btn btn-primary" value='Create'>        
+        <input type='submit' class="btn btn-success" value='Create'>        
     </div>
 </form>

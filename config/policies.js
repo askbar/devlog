@@ -49,12 +49,14 @@ module.exports.policies = {
 		// feed : ['isNiceToAnimals', 'hasRabbitFood']
 	// }
 
-  TestController: {
-    '*': true
-  },
 
   ProfileController: {
     '*': true
+  },
+
+  FileSystemController: {
+    'tree': true,
+    'up': true
   }
 
 };
