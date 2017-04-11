@@ -9,6 +9,10 @@ module.exports = {
 		// an array of file path locations to watch in this machine
 		paths: {
 			type: 'array'
+		},
+		watchers: {
+			collection: 'watcher',
+			via: 'profiles'
 		}
 	}
 };

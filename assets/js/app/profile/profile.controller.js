@@ -18,12 +18,10 @@ angular.module('devlog.profile.controllers', [])
             };
 
             $scope.delete = function (profile) {
-                console.log('profile', profile);
                 profile.$delete({
                     id: profile.id
                 }).then(function (response) {
-                    $scope.profiles = _.without(profile);
-                    // console.log('profile deleted', response);
+                    _.pull($scope.profiles, profile);
                 }, function (response) {
                     console.log('error', response);
                 });
@@ -35,7 +33,7 @@ angular.module('devlog.profile.controllers', [])
     ['$scope', 'lodash', 'Profile', '$uibModalInstance',
         function ($scope, _, Profile, $uibModalInstance) {
 
-            
+
             $scope.formModel = {
                 id: '',
                 name: '',
@@ -45,6 +43,12 @@ angular.module('devlog.profile.controllers', [])
             // Add another empty file path to the paths array
             $scope.addPath = function () {
                 $scope.formModel.paths.push('');
+            };
+
+            $scope.removePath = function (index) {
+                _.remove($scope.formModel.paths, function (v, k) {
+                    return _.eq(k, index);
+                });
             };
 
             $scope.create = function () {
@@ -57,11 +61,6 @@ angular.module('devlog.profile.controllers', [])
                 }, function (response) {
                     console.log('error', response);
                 });
-            };
-
-            $scope.nodeSelected = function(e, data) {
-                var _l = data.node.attrs;
-                console.log('_l', _l);
             };
 
             $scope.cancel = function () {
@@ -81,9 +80,9 @@ angular.module('devlog.profile.controllers', [])
                 $scope.formModel.paths.push('');
             };
 
-            $scope.removePath = function (path) {
-                _.remove($scope.formModel.paths, function (v) {
-                    return _.eq(v, path);
+            $scope.removePath = function (index) {
+                _.remove($scope.formModel.paths, function (v, k) {
+                    return _.eq(k, index);
                 });
             };
 

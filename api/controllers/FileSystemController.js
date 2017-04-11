@@ -60,7 +60,14 @@ module.exports = {
     		_p = path.resolve(__dirname, '../..');
     	}
     	else {
-			_p = path.dirname(id);
+
+    		var stats = fs.statSync(id);
+    		if (stats.isFile()) {
+				_p = path.dirname(id);
+    		}
+    		else {
+    			_p  = id;
+    		}
     	}
 
     	async.waterfall([

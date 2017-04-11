@@ -1,4 +1,4 @@
-<form method="POST" ng-submit="create()" autocomplete="off">
+<form method="POST" name='createProfileForm' novalidate ng-submit="create()" autocomplete="off">
     <div class="modal-header">
         <h3 class="modal-title" id="modal-title">{{formModel.name || 'Create a new Profile'}}</h3>
     </div>
@@ -6,12 +6,36 @@
             <input type="hidden" ng-model='formModel.id' name='id' id='id'>
             <div class='form-group'>
                 <label for="name">Profile name</label>
-                <input type="text" class="form-control" id="name" name='name' ng-model='formModel.name' placeholder="Profile name">
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="name" 
+                    name='name' 
+                    ng-model='formModel.name' 
+                    placeholder="Profile name" 
+                    required/>
+                <span class='help-block'>A meaningful profile to identify the files and folders this profile will be configured to watch</span>
             </div>
             <div ng-repeat='path in formModel.paths track by $index' class='form-group'>
-                <label for='files'>Path {{$index + 1 }}</label>
-                <input type='text' ng-model='formModel.paths[$index]' class='form-control' id='files' name='files' placeholder='File Path'>
-                <span class='help-block'>Type the path of the file/folder to watch or select from the file browser below.</span>
+                <label for='file-{{$index}}'>Path {{$index + 1 }}</label>
+                <div class='row'>
+                    <div class='col-xs-10'>
+                        <input 
+                            type='text' 
+                            ng-model='formModel.paths[$index]' 
+                            class='form-control' 
+                            id='file-{{$index}}' 
+                            name='files' 
+                            placeholder='File Path'
+                            required/>
+                    </div>
+                    <div class='col-xs-2'>
+                        <button ng-if='formModel.paths.length > 1' type='button' class='btn btn-default' ng-click='removePath($index)'>
+                            <span class='glyphicon glyphicon-minus'></span>
+                        </button>
+                    </div>
+                </div>
+                <span class='help-block'>Enter file or folder path to or select the same from the file browser below.</span>
                 <div class='well'>
                     <file-browser selected-path='formModel.paths[$index]'></file-browser>
                 </div>
@@ -19,11 +43,21 @@
             <div class='form-group'>
                 <button type="button" class='btn btn-info' ng-click="addPath()">
                     <span class='glyphicon glyphicon-plus'></span>
+                    Add another
                 </button>
             </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
-        <input type='submit' ng-disabled='!formModel.name' class="btn btn-success" value='Create'>        
+        <button 
+            class="btn btn-danger" 
+            type="button" 
+            ng-click="cancel()">
+            Cancel
+        </button>
+        <input 
+            type='submit' 
+            ng-disabled='createProfileForm.$pristine || createProfileForm.$invalid' 
+            class="btn btn-success" 
+            value='Create'/>        
     </div>
 </form>

@@ -12,11 +12,11 @@ angular.module('devlog.main', [
       abstract: true,
       views: {
         '': {
-          templateUrl: 'assets/js/app/main/main',
+          templateUrl: 'assets/js/app/main/templates/main',
           controller: 'MainController'
         },
         'header@devlog': {
-          templateUrl: 'assets/js/app/main/header',
+          templateUrl: 'assets/js/app/main/templates/header',
           controller: 'HeaderController'
         }
       }
@@ -24,7 +24,7 @@ angular.module('devlog.main', [
 
     // Route fallbacks
     $urlRouterProvider
-        .when('/devlog', '/devlog/dashboard');
+        .when('/devlog', '/devlog/watcher');
 })
 
 

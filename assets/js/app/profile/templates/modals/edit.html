@@ -9,13 +9,19 @@
       <input type="text" class="form-control" id="name" name='name' ng-model='formModel.name' placeholder="Profile name">
     </div>
     <div ng-repeat='path in formModel.paths track by $index' class='form-group'>
-      <label for='files'>File path {{$index + 1 }}</label>
+      <label for='file-{{$index}}'>File path {{$index + 1 }}</label>
       <div class='row'>
-        <div class='col-xs-8'>
-          <input type='text' ng-model='formModel.paths[$index]' class='form-control' id='files' name='files' placeholder='File Path'>
+        <div class='col-xs-10'>
+          <input 
+            type='text' 
+            ng-model='formModel.paths[$index]' 
+            class='form-control' 
+            id='file-{{$index}}' 
+            name='files' 
+            placeholder='File Path'/>
         </div>
-        <div class='col-xs-4'>
-          <button type='button' class='btn btn-default' ng-click='removePath(formModel.paths[$index])'>
+        <div class='col-xs-2'>
+          <button ng-if='formModel.paths.length > 1' type='button' class='btn btn-default' ng-click='removePath($index)'>
             <span class='glyphicon glyphicon-minus'></span>
           </button>
         </div>
@@ -28,11 +34,21 @@
     <div class='form-group'>
       <button type="button" class='btn btn-info' ng-click="addPath()">
         <span class='glyphicon glyphicon-plus'></span>
+        Add another
       </button>
     </div>
   </div>
   <div class="modal-footer">
-    <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
-    <input type='submit' class="btn btn-success" value='Edit'>
+    <button 
+      class="btn btn-danger" 
+      type="button" 
+      ng-click="cancel()">
+      Cancel
+    </button>
+    <input 
+      type='submit'
+      ng-disabled='createProfileForm.$pristine || createProfileForm.$invalid'
+      class="btn btn-success" 
+      value='Save'/>
   </div>
 </form>
