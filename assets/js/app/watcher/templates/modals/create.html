@@ -1,0 +1,31 @@
+<form method="POST" name='createWatcherForm' novalidate ng-submit="create()" autocomplete="off">
+    <div class="modal-header">
+        <h3 class="modal-title" id="modal-title">Create Watcher</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+            <input type="hidden" ng-model='formModel.id' name='id' id='id'>
+            <div ng-repeat='profile in formModel.profiles track by $index' class='form-group'>
+                <label for='profile-{{$index}}'>Profile {{$index + 1 }}</label>
+                <select 
+                    class='form-control' 
+                    ng-required='true'
+                    ng-model='formModel.profiles[$index]' 
+                    id='profile-{{$index}}' 
+                    name='profile'>
+                    <option value="">--- Select Profile ---</option>
+                    <option ng-repeat="profile in profiles" value='profile.id'>{{profile.name}}</option>
+                </select>
+                <span class='help-block'>Add profiles to this watcher. Profiles determine what files or folders should be watched.</span>
+            </div>
+            <div ng-if='profiles.length > 1' class='form-group'>
+                <button type="button" class='btn btn-info' ng-click="addProfile()">
+                    <span class='glyphicon glyphicon-plus'></span>
+                    Add another
+                </button>
+            </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="cancel()">Cancel</button>
+        <input type='submit' class="btn btn-success" value='Create'>        
+    </div>
+</form>
