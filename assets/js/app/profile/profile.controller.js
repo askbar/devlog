@@ -103,4 +103,7 @@ angular.module('devlog.profile.controllers', [])
                 $uibModalInstance.close();
             };
 
+            $scope.$on('$destroy', function() {
+                $scope.formModel = null;
+            });
         }]);

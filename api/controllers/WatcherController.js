@@ -13,21 +13,23 @@ module.exports = {
     //=======================================================================
 
     find: function(req, res) {
-    	Watcher.find().exec(function(err, watchers) {
+    	Watcher.find().populate('profiles').exec(function(err, watchers) {
 			return res.json(200, watchers);
     	});
     },
 
     findOne: function(req, res) {
-    	Watcher.findOne({ id: req.param('id') }).exec(function (err, watcher) {
-    	  if (err) {
-    	    return res.json(500, err);
-    	  }
-    	  if (!watcher) {
-    	    return res.json(500, { message: 'Could not find watcher with id ' + req.param('id') });
-    	  }
-    	  return res.json(200, watcher);
-    	});
+    	Watcher.findOne({ id: req.param('id') })
+    		.populate('profiles')
+    		.exec(function (err, watcher) {
+	    	  if (err) {
+	    	    return res.json(500, err);
+	    	  }
+	    	  if (!watcher) {
+	    	    return res.json(500, { message: 'Could not find watcher with id ' + req.param('id') });
+	    	  }
+	    	  return res.json(200, watcher);
+	    	});
     },
 
     create: function(req, res) {

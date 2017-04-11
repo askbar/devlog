@@ -1,9 +1,9 @@
 <div class='col-md-12'>
 	<h3>
-		Watcher
+		Watchers
 		<button ng-if='profiles.length > 0 && watchers.length > 0' type='button' class='btn btn-info pull-right' ui-sref='.create'>
 			<span class='glyphicon glyphicon-plus'></span>
-			New
+			New Watcher
 		</button>
 	</h3>
 </div>
@@ -14,7 +14,35 @@
 	</div>
 	<div ng-if='profiles.length > 0'>
 		<div ng-if='watchers.length == 0' class="alert alert-info" role="alert">
-			No watchers found. <strong><a ui-sref='.create'>Create one.</a></strong>
+			No watchers found. <strong><a  href='#' ui-sref='.create'>Create one.</a></strong>
 		</div>
+		<table class='table table-hover' ng-if='watchers.length > 0'>
+			<thead>
+				<tr>
+					<th>Watcher name</th>
+					<th>Profiles</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat='watcher in watchers track by $index'>
+					<th>
+						<a href='#' ui-sref='.edit({id: watcher.id})'>
+							{{watcher.name}}
+						</a>
+					</th>
+					<td>
+						<p ng-repeat='profile in watcher.profiles'>
+							<a href='#' ui-sref='profile.edit({id: profile.id})'>{{profile.name}}</a>
+						</p>
+					</td>
+					<td>
+						<button type='button' ng-click='delete(watcher)' class='btn btn-danger'>
+							<span class='glyphicon glyphicon-trash'></span>
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </div>

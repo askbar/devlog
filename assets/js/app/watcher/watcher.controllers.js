@@ -1,8 +1,8 @@
 angular.module('devlog.watcher.controllers', [])
 
 .controller('WatcherController',
-    ['$scope', '_profiles', 'Watcher',
-    function($scope, _profiles, Watcher) {
+    ['$scope', '_profiles', 'Watcher', '$state', 'lodash',
+    function($scope, _profiles, Watcher, $state, _) {
 
     	$scope.profiles = _profiles;
 
@@ -39,13 +39,19 @@ angular.module('devlog.watcher.controllers', [])
 
             $scope.formModel = {
                 id: '',
-                automatic: false,
+                name: '',
                 profiles: ['']
             };
 
             // Add another empty file path to the paths array
             $scope.addProfile = function () {
                 $scope.formModel.profiles.push('');
+            };
+
+            $scope.removeProfile = function(index) {
+                _.remove($scope.formModel.profiles, function (v, k) {
+                    return _.eq(k, index);
+                });
             };
 
             $scope.create = function () {
@@ -68,4 +74,43 @@ angular.module('devlog.watcher.controllers', [])
             	$scope.formModel = null;
             });
 
+        }])
+
+.controller('WatcherEditController',
+    ['$scope', 'lodash', 'Watcher', '$uibModalInstance', '_profiles', '_watcher',
+        function ($scope, _, Watcher, $uibModalInstance, _profiles, _watcher) {
+
+        	$scope.profiles = _profiles;
+            $scope.formModel = _watcher;
+
+            $scope.addProfile = function () {
+                $scope.formModel.profiles.push('');
+            };
+
+            $scope.removeProfile = function(index) {
+                _.remove($scope.formModel.profiles, function (v, k) {
+                    return _.eq(k, index);
+                });
+            };
+
+            $scope.edit = function() {
+                Watcher.update({
+                    id: $scope.formModel.id
+                }, $scope.formModel).$promise.then(function(response) {
+                    $uibModalInstance.close({
+                        watcher: response
+                    });
+                }, function(response) {
+                    console.log('error', response);
+                });
+            };
+
+            $scope.cancel = function () {
+                $uibModalInstance.close();
+            };
+
+            $scope.$on('$destroy', function() {
+            	$scope.profiles = null;
+            	$scope.formModel = null;
+            });
         }]);

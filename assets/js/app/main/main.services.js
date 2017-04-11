@@ -12,10 +12,10 @@ angular.module('devlog.main.services', [])
 .provider('lodash', [
   function() {
     return {
-      $get: function($window) {
-
+      $get: function($window, $rootScope) {
         var _ = $window._;
         delete($window._);
+        $rootScope._ = _;
         return (_);
       }
     };

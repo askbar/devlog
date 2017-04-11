@@ -10,7 +10,11 @@ angular.module('devlog.watcher', [
         url: '/watcher',
         parent: 'devlog',
         reloadOnSearch: false,
-        params: {},
+        params: {
+          watcher: {
+            value: null
+          }
+        },
         resolve: {
           _profiles: ['Profile', function(Profile) {
             return Profile.query();
@@ -43,8 +47,34 @@ angular.module('devlog.watcher', [
             $state.go('^');
           });
         }]
-      });
+      })
 
+      .state('watcher.edit', {
+        url: '/edit/:id',
+        params: {},
+        onEnter: ['$uibModal', '$state', '$stateParams', 
+        function($uibModal, $state, $stateParams) {
+          var watcherId = $stateParams.id;
+          $uibModal.open({
+            templateUrl: 'assets/js/app/watcher/templates/modals/edit',
+            controller: 'WatcherEditController',
+            resolve: {
+              _profiles: ['Profile', function(Profile) {
+                return Profile.query();
+              }],
+              _watcher: ['Watcher', function(Watcher) {
+                return Watcher.get({
+                  id: watcherId
+                }).$promise;
+              }]
+            }
+          }).result.then(function(result) {
+            $state.go('^', result);
+          }, function() {
+            $state.go('^');
+          });
+        }]
+      });
 })
 
 .run(function() {

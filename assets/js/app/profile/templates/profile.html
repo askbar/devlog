@@ -19,14 +19,15 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="profile in profiles">
-				<th>{{profile.name}}</th>
+				<th>
+					<a href='#' ui-sref='.edit({id: profile.id })'>
+						{{profile.name}}
+					</a>
+				</th>
 				<td>
 					<p ng-repeat='path in profile.paths'>{{path}}</p>
 				</td>
 				<td>
-					<button type='button' ng-click='edit(profile)' class='btn btn-primary'>
-						<span class='glyphicon glyphicon-edit'></span>
-					</button>
 					<button type='button' ng-click='delete(profile)' class='btn btn-danger'>
 						<span class='glyphicon glyphicon-trash'></span>
 					</button>

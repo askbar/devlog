@@ -6,7 +6,14 @@
     <input type="hidden" ng-model='formModel.id' name='id' id='id'>
     <div class='form-group'>
       <label for="name">Profile name</label>
-      <input type="text" class="form-control" id="name" name='name' ng-model='formModel.name' placeholder="Profile name">
+      <input 
+        type="text" 
+        class="form-control" 
+        id="name" 
+        name='name' 
+        ng-model='formModel.name' 
+        placeholder="Profile name" 
+        required/>
     </div>
     <div ng-repeat='path in formModel.paths track by $index' class='form-group'>
       <label for='file-{{$index}}'>File path {{$index + 1 }}</label>
@@ -34,7 +41,7 @@
     <div class='form-group'>
       <button type="button" class='btn btn-info' ng-click="addPath()">
         <span class='glyphicon glyphicon-plus'></span>
-        Add another
+        Add Path
       </button>
     </div>
   </div>
