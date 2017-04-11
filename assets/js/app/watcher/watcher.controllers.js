@@ -29,6 +29,17 @@ angular.module('devlog.watcher.controllers', [])
             });
         };
 
+        $scope.log = function(watcher) {
+        	$state.go('logger', {
+        		ids: [watcher.id]
+        	});
+        };
+
+        $scope.$on('$destroy', function() {
+        	$scope.profiles = null;
+        	$scope.watchers = null;
+        });
+
     }])
 
     .controller('WatcherCreateController',

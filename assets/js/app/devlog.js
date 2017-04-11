@@ -13,8 +13,8 @@ angular.module('devlog', [
   // App modules
   'devlog.main',
   'devlog.watcher',
-  'devlog.profile'
-
+  'devlog.profile',
+  'devlog.logger'
 ])
 
 .config(function($urlRouterProvider) {
