@@ -1,49 +1,6 @@
 var _ = require('lodash');
-var fs = require('fs');
 var path = require('path');
 var async = require('async');
-
-//=======================================================================
-// Private methods
-//=======================================================================
-
-var _process = function(_p, callback) {
-	var files = [];
-	fs.readdir(_p, function(err, list) {
-		if (err) {
-			return callback(err);
-		}
-		_.each(list, function(file) {
-			files.push(async.apply(_processNode, _p, file));
-		});
-		async.parallel(files, function(err, result) {
-			callback(null, result);
-		});
-	});
-};
-
-var _processNode = function(_p, f, callback) {
-	fs.stat(path.join(_p, f ), function(err, stats) {
-		if (err) {
-			return callback(err);
-		}
-		callback(null, {
-			id: path.join(_p, f),
-			text: f,
-			isDirectory: stats.isDirectory(),
-			state: {
-				opened: false,
-				disabled: false,
-				selected: false
-			},
-			attrs: {
-				base: path.join(_p),
-				isLeaf: stats.isFile()
-			},
-			children: stats.isDirectory()
-		});
-	});
-};
 
 module.exports = {
 
@@ -52,29 +9,15 @@ module.exports = {
     //=======================================================================
     
     tree: function(req, res) {
-    	
-    	var _p,
-    		id = req.param('id');
-
-    	if (_.isEmpty(id)) {
-    		_p = path.resolve(__dirname, '../..');
-    	}
-    	else {
-
-    		var stats = fs.statSync(id);
-    		if (stats.isFile()) {
-				_p = path.dirname(id);
-    		}
-    		else {
-    			_p  = id;
-    		}
-    	}
-
     	async.waterfall([
-    		async.apply(_process, _p)
-		], function(err, results) {
+    		async.apply(FileSystemService.resolve, req.param('id')),
+    		FileSystemService.process
+		], function(err, results, path) {
+			if (err) {
+				return res.json(500, err);
+			}
 			return res.json(200, {
-				currentDir: _p,
+				currentDir: path,
 				files: results
 			});
 		});
@@ -92,7 +35,7 @@ module.exports = {
     	}
 
     	async.waterfall([
-    		async.apply(_process, _p)
+    		async.apply(FileSystemService.process, _p)
 		], function(err, results) {
 			return res.json(200, {
 				currentDir: _p,
@@ -100,5 +43,4 @@ module.exports = {
 			});
 		});
     }
-
 };
