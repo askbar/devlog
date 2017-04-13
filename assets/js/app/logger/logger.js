@@ -16,7 +16,11 @@ angular.module('devlog.logger', [
             squash: true
           }
         },
-        resolve: {},
+        resolve: {
+          _watchers: ['Watcher', function(Watcher) {
+            return Watcher.query().$promise;
+          }]
+        },
         views: {
           'content@devlog': {
             templateUrl: 'assets/js/app/logger/templates/logger',

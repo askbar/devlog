@@ -1,0 +1,36 @@
+<div class='col-xs-12'>
+
+	<h3>Logger</h3>
+
+	<uib-accordion ng-repeat='watcher in watchers' close-others="oneAtATime">
+	    <div uib-accordion-group class="panel-default" is-open="watcher.isOpened">
+			<uib-accordion-heading>
+	        	{{watcher.name}} 
+	        	<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': watcher.isOpened, 'glyphicon-chevron-right': !watcher.isOpened}"></i>
+			</uib-accordion-heading>
+			<div ng-repeat='profile in watcher.profiles' class='panel panel-default'>
+				<div class='panel-heading'>
+					{{profile.name}}
+				</div>
+				<div class='panel-body'>
+					<div class='row'>
+						<div class='col-xs-4'>
+							<ul class="list-group">
+						  		<li ng-repeat='path in profile.paths' class="list-group-item">
+					        		<i class="glyphicon glyphicon-file"></i>
+						  			{{path}}
+				  				</li>
+							</ul>
+						</div>
+						<div class='col-xs-8'>
+							<div class='well'>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	    </div>
+	</uib-accordion>
+
+</div>

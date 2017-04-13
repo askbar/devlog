@@ -8,15 +8,14 @@ module.exports = {
 
 	start: function(req, res) {
 
-		var socket = req.socket;
-		var path = req.param('path');
-		var currentDir = path.resolve(__dirname, '..', 'services/processes');
-		var tailWorkerChild = childProcess.fork(currentDir + "/TailWorker");
+	    var socketId = sails.sockets.id(req);
+		var p = req.param('path');
+		var tailWorkerChild = childProcess.fork(path.resolve(__dirname, '..', 'services/processes') + "/TailWorker");
 		var pid = tailWorkerChild.pid;
 
 		tailWorkerChild.send({
 			start: true,
-			path: path
+			path: p
 		});
 
 		// socket.join(pid);
@@ -27,10 +26,13 @@ module.exports = {
 	    	// socket.broadcast.to(pid).emit('newLine', msg);
 		}.bind(this));
 
-		_watchers[tailWorkerChild.pid] = tailWorkerChild;
+		_watchers[tailWorkerChild.pid] = {
+			worker: tailWorkerChild,
+			path: p
+		};
 
 		return res.json(200, {
-			message: 'tailing ' + path + ' with process ' + pid
+			message: 'tailing ' + p + ' with process ' + pid
 		});
 
 	},
@@ -38,9 +40,10 @@ module.exports = {
 	stop: function(req, res) {
 		
 		var pid = req.param('pid');
-		var tailWorkerChild = _watchers[pid];
+		var childProcess = _watchers[pid];
+		var worker = childProcess.worker;
 
-		tailWorkerChild.send({
+		worker.send({
 			stop: true
 		});
 
@@ -51,7 +54,7 @@ module.exports = {
 	    // socket.leave(pid);
 
 		return res.json(200, {
-			message: 'tailing ' + path + ' with process ' + pid
+			message: 'stopped tailing ' + childProcess.path + ' [' + pid + ']'
 		});
 	}
 
