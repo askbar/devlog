@@ -23,6 +23,10 @@ angular.module('devlog.logger.controllers', [])
 			});
 		};
 
+		$scope.action = function(watcher) {
+
+		};
+
 		$scope.$on('$destroy', function() {
 			$scope.watchers = null;
 		});

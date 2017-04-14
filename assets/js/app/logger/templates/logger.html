@@ -8,6 +8,16 @@
 	        	{{watcher.name}} 
 	        	<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': watcher.isOpened, 'glyphicon-chevron-right': !watcher.isOpened}"></i>
 			</uib-accordion-heading>
+			<div class='row'>
+				<div class='col-xs-12'>
+					<button type='button' class='btn btn-primary' ng-click='action(watcher)'>
+						<span ng-class='{"glyphicon glyphicon-play": !watcher.started, "glyphicon glyphicon-stop": watcher.started }'></span>
+						<span ng-if='!watcher.started'>Start</span>
+						<span ng-if='watcher.started'>Stop</span>
+					</button>
+				</div>
+			</div>
+			<br/>
 			<div ng-repeat='profile in watcher.profiles' class='panel panel-default'>
 				<div class='panel-heading'>
 					{{profile.name}}
