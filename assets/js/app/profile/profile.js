@@ -14,7 +14,11 @@ angular.module('devlog.profile', [
             value: null
           }
         },
-        resolve: {},
+        resolve: {
+          _profiles: ['Profile', function(Profile) {
+            return Profile.query().$promise;
+          }]
+        },
         views: {
           'content@devlog': {
             templateUrl: 'assets/js/app/profile/templates/profile',

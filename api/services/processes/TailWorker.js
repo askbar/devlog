@@ -3,60 +3,87 @@ var Tail = require('tail').Tail;
 
 process.on('message', function(msg) {	
 
-	this.tail = null;
+	this.tails = [];
 
-	this._startTail = function() {
+	this.stopTail = function() {
 
-		var scope = this;
-
-		// Start tailing a filepath
-		this.tail = new Tail(msg.path, {
-			fromBeginning: true	,
+		_.each(this.tails, function(tail) {
+			tail.unwatch(); // Stop tailing
 		});
 
-		this.tail.on('line', function(data) {
+		process.send({
+			event: 'stopTail',
+			params: {
+				id: msg.params.id,
+				paths: msg.params.paths
+			}
+		});
+		
+		process.exit();
+	};
+
+	if (_.isEmpty(msg)) {
+		console.log('TailWorker: invalid parameters, cannot start process.');
+	}
+
+	var scope = this;
+
+	_.each(msg.params.paths, function(path) {
+
+		// Start tailing a filepath
+		var tail = new Tail(path, {
+			fromBeginning: true
+		});
+
+		tail.on('line', function(data) {
 			try {
-				process.send(data);
+				process.send({
+					event: 'newLine',						
+					params: {
+						path: path,
+						line: data
+					}
+				});
 			}
 			catch(err) {
 				console.log('TailWorker: tail encountered an error; process will be terminated');
-				scope._stopTail();
+				scope.stopTail();
 			}
 		});
 
-		this.tail.on('error', function() {
+		tail.on('error', function() {
 			console.log('TailWorker: tail encountered an error; process will be terminated');
-			scope._stopTail();
+			scope.stopTail();
 		});
 
-	};
+		scope.tails.push(tail);
+	});
 
-	this._stopTail = function() {
-		this.tail.unwatch(); // Stop tailing
-		try {
-			process.disconnect();
+	console.log('startTail');
+	
+	process.send({
+		event: 'startTail',				
+		params: {
+			id: msg.params.id,				
+			paths: msg.params.paths,
+			pid: process.pid
 		}
-		catch (err) {
-			console.log('TailWorker: error stopping process', err.message, '\n', err.stack);			
-		}
-	};
-
-	this._init = function() {
-		if (_.isEmpty(msg)) {
-			console.log('TailWorker: invalid parameters, cannot start process.');
-		}
-		else {
-			if (msg.start) {
-				this._startTail();
-			}
-			if (msg.stop) {
-				this._stopTail();
-			}
-		}
-	}.bind(this)();
+	});
 
 });
 
-process.on('uncaughtException', function() {
+process.on('exit', function() {
+	this.stopTail();
+});
 
+process.on('SIGINT', function() {
+	this.stopTail();
+});
+
+process.on('uncaughtException', function(error) {
+	if (!_.eq(error.toString(), 'Error: IPC channel is already disconnected')) {
+		process.send({
+			operation: 'stopTail'
+		});
+  }
 });

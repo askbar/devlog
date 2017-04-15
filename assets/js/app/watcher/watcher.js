@@ -17,7 +17,10 @@ angular.module('devlog.watcher', [
         },
         resolve: {
           _profiles: ['Profile', function(Profile) {
-            return Profile.query();
+            return Profile.query().$promise;
+          }],
+          _watchers: ['Watcher', function(Watcher) {
+            return Watcher.query().$promise;
           }]
         },
         views: {
@@ -38,7 +41,7 @@ angular.module('devlog.watcher', [
             controller: 'WatcherCreateController',
             resolve: {
               _profiles: function() {
-                return Profile.query();
+                return Profile.query().$promise;
               }
             }
           }).result.then(function(result) {
@@ -60,7 +63,7 @@ angular.module('devlog.watcher', [
             controller: 'WatcherEditController',
             resolve: {
               _profiles: ['Profile', function(Profile) {
-                return Profile.query();
+                return Profile.query().$promise;
               }],
               _watcher: ['Watcher', function(Watcher) {
                 return Watcher.get({

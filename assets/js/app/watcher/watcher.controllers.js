@@ -1,17 +1,11 @@
 angular.module('devlog.watcher.controllers', [])
 
 .controller('WatcherController',
-    ['$scope', '_profiles', 'Watcher', '$state', 'lodash',
-    function($scope, _profiles, Watcher, $state, _) {
+    ['$scope', '_profiles', '_watchers', '$state', 'lodash',
+    function($scope, _profiles, _watchers, $state, _) {
 
     	$scope.profiles = _profiles;
-
-        $scope.watchers = [];
-        $scope.loadWatchers = function () {
-            $scope.watchers = Watcher.query();
-        };
-
-        $scope.loadWatchers();
+        $scope.watchers = _watchers;
 
         $scope.edit = function (watcher) {
             $state.go('.edit', {

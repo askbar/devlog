@@ -3,15 +3,15 @@
 	<h3>Logger</h3>
 
 	<uib-accordion ng-repeat='watcher in watchers' close-others="oneAtATime">
-	    <div uib-accordion-group class="panel-default" is-open="watcher.isOpened">
+	    <div uib-accordion-group class="panel-default" is-open="watcher.opened">
 			<uib-accordion-heading>
 	        	{{watcher.name}} 
-	        	<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': watcher.isOpened, 'glyphicon-chevron-right': !watcher.isOpened}"></i>
+	        	<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': watcher.getOpened(), 'glyphicon-chevron-right': !watcher.getOpened()}"></i>
 			</uib-accordion-heading>
 			<div class='row'>
 				<div class='col-xs-12'>
-					<button type='button' class='btn btn-primary' ng-click='action(watcher)'>
-						<span ng-class='{"glyphicon glyphicon-play": !watcher.started, "glyphicon glyphicon-stop": watcher.started }'></span>
+					<button type='button' class='btn' ng-class='{"btn-primary": !watcher.getStarted(), "btn-danger": watcher.getStarted() }' ng-click='action(watcher)'>
+						<span ng-class='{"glyphicon glyphicon-play": !watcher.getStarted(), "glyphicon glyphicon-stop": watcher.getStarted() }'></span>
 						<span ng-if='!watcher.started'>Start</span>
 						<span ng-if='watcher.started'>Stop</span>
 					</button>

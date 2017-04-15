@@ -1,15 +1,10 @@
 angular.module('devlog.profile.controllers', [])
 
     .controller('ProfileController',
-    ['$scope', 'Profile', 'lodash', '$window', '$state',
-        function ($scope, Profile, _, $window, $state) {
+    ['$scope', '_profiles', 'lodash', '$window', '$state',
+        function ($scope, _profiles, _, $window, $state) {
 
-            $scope.profiles = [];
-            $scope.loadProfiles = function () {
-                $scope.profiles = Profile.query();
-            };
-
-            $scope.loadProfiles();
+            $scope.profiles = _profiles;
 
             $scope.edit = function (profile) {
                 $state.go('.edit', {

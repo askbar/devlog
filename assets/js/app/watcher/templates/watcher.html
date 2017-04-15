@@ -28,12 +28,12 @@
 				<tr ng-repeat='watcher in watchers track by $index'>
 					<th>
 						<a href='#' ui-sref='.edit({id: watcher.id})'>
-							{{watcher.name}}
+							{{watcher.getName()}}
 						</a>
 					</th>
 					<td>
 						<p ng-repeat='profile in watcher.profiles'>
-							<a href='#' ui-sref='profile.edit({id: profile.id})'>{{profile.name}}</a>
+							<a href='#' ui-sref='profile.edit({id: profile.id})'>{{profile.getName()}}</a>
 						</p>
 					</td>
 					<td>

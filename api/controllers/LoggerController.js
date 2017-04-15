@@ -3,8 +3,6 @@ var childProcess = require("child_process");
 var processPath = path.resolve(__dirname, '..', 'services/processes') + "/TailWorker";
 var _ = require('lodash');
 
-var _watchers = {};
-
 module.exports = {
 
 	start: function(req, res) {
@@ -12,54 +10,33 @@ module.exports = {
 		if (!req.isSocket) {
 			return res.badRequest();
 		}
-
-	  var paths = req.param('paths'),
-				roomId = req.param('id');
-		
-		// save the room id
-		_watchers[roomId] = {};
-
-		// create a room based on the watcher id
-		sails.sockets.join(req, roomId, function(err) {
-
+		var operation = req.param('operation'),
+				params = req.param('params'), 
+				process = childProcess.fork(processPath),
+				pid = process.pid;
+			
+		sails.sockets.join(req, params.id, function(err) {
+			
 			if (err) {
-				return res.serverError(err);
+				return res.json(500, err);
 			}
 
-			_.each(paths, function(p) {
-
-				var tailWorkerChild = childProcess.fork(processPath),
-						pid = tailWorkerChild.pid;
-
-				tailWorkerChild.send({
-					start: true,
-					path: p
-				});
-
-				tailWorkerChild.on('message', function(msg) {
-					
-					console.log('message from process', msg);
-					
-					sails.socket.broadcast(roomId, 'line', {
-						line: msg
-					});
-
-				});
-
-				_watchers[roomId][pid] = {
-					worker: tailWorkerChild,
-					path: p
-				};
-
-			}.bind(this));
-
-			return res.json(200, {
-				message: 'tailing all file paths registered under the profile ' + roomId,
-				roomId: roomId,
-				paths: paths,
-				pids: _.keys(_watchers[roomId])
+			process.on('message', function(msg) {
+				sails.sockets.broadcast(params.id, msg.event, msg);
 			});
 
+			process.send({
+				operation: operation,
+				params: params
+			});
+
+			return res.json(200, {
+				message: 'tailing all file paths registered under the profile ' + params.id,
+				data: {
+					paths: params.paths,
+					pid: pid
+				}
+			});
 		});
 	},
 
@@ -69,26 +46,22 @@ module.exports = {
 			return res.badRequest();
 		}
 
-		var roomId = req.param('id'), 
-				room = _watchers[id];
+		var operation = req.param('operation'),
+				params = req.param('params');
 
-		_.each(room, function(process) {
-			var worker = process.worker;
-			worker.send({
-				stop: true
-			});
-		});
+		if (_.eq(operation, 'stopTail')) {
 
-		_watchers[roomId] = null;
-		delete _watchers[roomId];
+			process.kill(params.pid, 'SIGINT');
 
-		sails.socket.leave(req, roomId, function(err) {
-			if (err) {
-				return res.serverError(err);
-			}
-			return res.json(200, {
-				message: 'stopped tailing file paths in profile' + roomId
-			});
-		});
+			// sails.sockets.leave(req, params.id, function(err) {
+			// 	if (err) {
+			// 		return res.json(500, err);
+			// 	}
+			// 	return res.json(200, {
+			// 		message: 'stopped tailing file paths in profile' + params.id
+			// 	});
+			// });
+		}
+
 	}
 };
