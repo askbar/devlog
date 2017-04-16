@@ -3,9 +3,15 @@ var Tail = require('tail').Tail;
 
 process.on('message', function(msg) {	
 
-	this.tails = [];
+	if (_.isEmpty(msg)) {
+		console.log('TailWorker: invalid parameters, cannot start process.');
+		process.exit();
+	}
 
+	this.tails = [];
 	this.stopTail = function() {
+
+		console.log('stopTail');
 
 		_.each(this.tails, function(tail) {
 			tail.unwatch(); // Stop tailing
@@ -22,9 +28,7 @@ process.on('message', function(msg) {
 		process.exit();
 	};
 
-	if (_.isEmpty(msg)) {
-		console.log('TailWorker: invalid parameters, cannot start process.');
-	}
+	console.log('startTail');
 
 	var scope = this;
 
@@ -59,8 +63,6 @@ process.on('message', function(msg) {
 		scope.tails.push(tail);
 	});
 
-	console.log('startTail');
-	
 	process.send({
 		event: 'startTail',				
 		params: {
@@ -82,8 +84,6 @@ process.on('SIGINT', function() {
 
 process.on('uncaughtException', function(error) {
 	if (!_.eq(error.toString(), 'Error: IPC channel is already disconnected')) {
-		process.send({
-			operation: 'stopTail'
-		});
+		this.stopTail();
   }
 });

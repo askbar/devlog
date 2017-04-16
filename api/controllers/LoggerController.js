@@ -10,24 +10,26 @@ module.exports = {
 		if (!req.isSocket) {
 			return res.badRequest();
 		}
-		var operation = req.param('operation'),
-				params = req.param('params'), 
-				process = childProcess.fork(processPath),
-				pid = process.pid;
-			
+		
+		var pid,
+				process,
+				params = req.param('params');
+
 		sails.sockets.join(req, params.id, function(err) {
 			
 			if (err) {
 				return res.json(500, err);
 			}
+			
+			process = childProcess.fork(processPath);
+			pid = process.pid;
+
+			process.send({
+				params: params
+			});
 
 			process.on('message', function(msg) {
 				sails.sockets.broadcast(params.id, msg.event, msg);
-			});
-
-			process.send({
-				operation: operation,
-				params: params
 			});
 
 			return res.json(200, {
@@ -46,22 +48,17 @@ module.exports = {
 			return res.badRequest();
 		}
 
-		var operation = req.param('operation'),
-				params = req.param('params');
+		var params = req.param('params');
+		process.kill(params.pid, 'SIGINT');
 
-		if (_.eq(operation, 'stopTail')) {
-
-			process.kill(params.pid, 'SIGINT');
-
-			// sails.sockets.leave(req, params.id, function(err) {
-			// 	if (err) {
-			// 		return res.json(500, err);
-			// 	}
-			// 	return res.json(200, {
-			// 		message: 'stopped tailing file paths in profile' + params.id
-			// 	});
-			// });
-		}
+		sails.sockets.leave(req, params.id, function(err) {
+			if (err) {
+				return res.json(500, err);
+			}
+			return res.json(200, {
+				message: 'stopped tailing file paths in profile' + params.id
+			});
+		});
 
 	}
 };

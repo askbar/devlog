@@ -37,26 +37,27 @@ angular.module('devlog.logger.controllers', [])
 		io.socket.on('stopTail', $scope.stopTailCb);
 
 		$scope.action = function(watcher) {
-			if (watcher.getStarted()) {
-				watcher.setStarted(false);
+
+			if (!watcher.getStarted()) {
 				Logger.start({
-					operation: 'stopTail',
+					operation: 'startTail',
 					params: {
 						id: watcher.getId(),
-						pid: watcher.getPid()
+						paths: watcher.getAllPaths()						
 					}
 				});
 			}
 			else {
-				watcher.setStarted(true);
 				Logger.stop({
-					operation: 'startTail', 
+					operation: 'stopTail', 
 					params: {
 						id: watcher.getId(),
-						paths: watcher.getAllPaths()
+						pid: watcher.getPid()						
 					}
 				});
 			}
+
+			watcher.setStarted(!watcher.getStarted());
 		};
 
 		$scope.$on('$destroy', function() {
