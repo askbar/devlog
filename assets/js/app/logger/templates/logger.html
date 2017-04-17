@@ -12,8 +12,8 @@
 				<div class='col-xs-12'>
 					<button type='button' class='btn' ng-class='{"btn-primary": !watcher.getStarted(), "btn-danger": watcher.getStarted() }' ng-click='action(watcher)'>
 						<span ng-class='{"glyphicon glyphicon-play": !watcher.getStarted(), "glyphicon glyphicon-stop": watcher.getStarted() }'></span>
-						<span ng-if='!watcher.started'>Start</span>
-						<span ng-if='watcher.started'>Stop</span>
+						<span ng-if='!watcher.getStarted()'>Start</span>
+						<span ng-if='watcher.getStarted()'>Stop</span>
 					</button>
 				</div>
 			</div>
@@ -30,19 +30,17 @@
 					  				href='#' 
 					  				ng-repeat='path in profile.paths track by $index'
 					  				class='list-group-item'
-					  				ng-class='{"active": currentlyViewing == $index}'
-					  				ng-click='view($event, watcher, profile)'>
+					  				ng-class='{"active": profile.isPathInView(path)}'
+					  				ng-click='view($event, watcher, profile, path)'>
 			        				<i class="glyphicon glyphicon-file"></i>
 					  				{{path}}
 					  			</a>
 							</div>
 						</div>
 						<div class='col-xs-8'>
-							<div class='well' ng-repeat='(key, lines) in profile.pathContents track by $index'>
-								<span ng-repeat='line in lines track by $index'>
-									{{line}}<br/>
-								</span>
-							</div>
+							<pre class='tail' ng-repeat='path in profile.paths track by $index' ng-if='profile.isPathInView(path)'>
+								<span ng-repeat='content in profile.pathContents[path] track by $index'>{{content}}</span>
+							</pre>
 						</div>
 					</div>
 				</div>

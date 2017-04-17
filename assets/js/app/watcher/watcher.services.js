@@ -102,12 +102,12 @@ angular.module('devlog.watcher.services', [])
       setPathContentByPath: function(path, line) {
         var profiles = this.getProfiles();
         _.each(profiles, function(profile) {
-          if (profile.hasPath(path)) {
-            console.log('setPathContent for', profile);
+          if (profile.hasPath(path) && profile.isInitialContentLoadedForPath(path)) {
             profile.setPathContent(path, line);
           }
         });
       }
+
     };
 
     return WatcherModel;

@@ -11,29 +11,40 @@ angular.module('devlog.logger.controllers', [])
 
 
 		$scope.newLineCb = function(data) {
-			$scope.$apply(function() {
-				var watcher = _.find($scope.watchers, function(watcher) {
-					return _.eq(watcher.getId(), data.params.id);
-				});
-				console.log('newLineCb', data, 'watcher', watcher);
-				watcher.setPathContentByPath(data.params.path, data.params.line);
+			var watcher = _.find($scope.watchers, function(watcher) {
+				return _.eq(watcher.getId(), data.params.id);
 			});
+			console.log('newLineCb', data, 'watcher', watcher);
+			watcher.setPathContentByPath(data.params.path, data.params.line);
+			$scope.$apply();
 		};
 
 		$scope.startTailCb = function(data) {
+
 			console.log('startTailCb', data);
+
 			var watcher = _.find($scope.watchers, function(watcher) {
 				return _.eq(watcher.getId(), data.params.id);
 			});
+
+			watcher.setStarted(true);
 			watcher.setPid(data.params.pid);
+
+			$scope.$apply();
 		};
 
 		$scope.stopTailCb = function(data) {
+			
 			console.log('stopTailCb', data);
+
 			var watcher = _.find($scope.watchers, function(watcher) {
 				return _.eq(watcher.getId(), data.params.id);
 			});
+
+			watcher.setStarted(false);
 			watcher.setPid(null);
+
+			$scope.$apply();
 		};
 
 		// Receving a message
@@ -66,11 +77,23 @@ angular.module('devlog.logger.controllers', [])
 				});
 			}
 
-			watcher.setStarted(!watcher.getStarted());
 		};
 
-		$scope.view = function(e, watcher, profile) {
+		$scope.view = function(e, watcher, profile, path) {
 			e.preventDefault();
+			
+			profile.setPathInView(path); // Makes this path current
+
+			if (!profile.isInitialContentLoadedForPath(path)) {
+				Logger.read({
+					path: path
+				}, function(resData, jwres) {
+					// console.log('view', resData, jwres);
+					profile.setInitialContentLoadedForPath(path, true);
+					profile.setPathContentByPath(resData.path, resData.lines);
+					$scope.$apply();
+				});
+			}
 		};
 
 		$scope.$on('$destroy', function() {

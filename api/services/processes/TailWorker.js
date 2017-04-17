@@ -37,7 +37,7 @@ process.on('message', function(msg) {
 
 		// Start tailing a filepath
 		var tail = new Tail(path, {
-			fromBeginning: true
+			fromBeginning: false
 		});
 
 		tail.on('line', function(data) {

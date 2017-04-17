@@ -2,6 +2,7 @@ var path = require('path');
 var childProcess = require("child_process");
 var processPath = path.resolve(__dirname, '..', 'services/processes') + "/TailWorker";
 var _ = require('lodash');
+var fs = require('fs');
 
 module.exports = {
 
@@ -39,6 +40,24 @@ module.exports = {
 					paths: params.paths,
 					pid: pid
 				}
+			});
+		});
+	},
+
+	read: function(req, res) {
+		var path = req.param('path');
+		if (_.isEmpty(path)) {
+			return res.json(500, {
+				message: 'path is empty'
+			});
+		}
+		fs.readFile(path, 'utf-8', function(err, data) {
+			if (err) {
+				return res.json(500, err);
+			}
+			return res.json(200, {
+				path: path,
+				lines: data.toString().split('\n')
 			});
 		});
 	},

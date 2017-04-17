@@ -62,5 +62,9 @@ module.exports.routes = {
   'GET /api/logger/stop': {
     controller: 'LoggerController',
     action: 'stop'
+  },
+  'GET /api/logger/read': {
+    controller: 'LoggerController',
+    action: 'read'
   }
 };

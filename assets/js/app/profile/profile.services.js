@@ -45,10 +45,13 @@ angular.module('devlog.profile.services', [])
 
     var ProfileModel = function(data) {
       angular.extend(this, data);
+      this.pathInView = {};
       this.pathContents = {};
-      this.currentlyViewedPath = -1;
-      _.each(this.paths, function(path) {
+      this.pathInitialContentsLoaded = {};
+      _.each(this.paths, function(path, index) {
+        this.pathInView[path] = false;
         this.pathContents[path] = [];
+        this.pathInitialContentsLoaded[path] = false;
       }.bind(this));
     };
 
@@ -72,18 +75,49 @@ angular.module('devlog.profile.services', [])
         return this.pathContents[path];
       },
       setPathContent: function(path, v) {
-        this.pathContents[path].push(v);
+        if (_.isArray(v)) {
+          _.extend(this.pathContents[path], v);
+        }
+        else if (_.isString(v)) {
+          this.pathContents[path].push(v);
+        }
       },
-      getCurrentlyViewedPath: function() {
-        return this.currentlyViewedPath;
+      getPathInitialContentsLoaded: function() {
+        return this.pathInitialContentsLoaded;
       },
-      setCurrentlyViewedPath: function(v) {
-        this.currentlyViewedPath = v;
+      setPathInitialContentsLoaded: function(path, v) {
+        this.pathInitialContentsLoaded = v;
+      },
+      setInitialContentLoadedForPath: function(path, v) {
+        this.pathInitialContentsLoaded[path] = v;
+      },
+      isInitialContentLoadedForPath: function(path) {
+        return this.pathInitialContentsLoaded[path];
+      },
+      setPathInView: function(path) {
+        this.pathInView = _.mapValues(this.pathInView, function(v, k) {
+          if (_.eq(k, path)) {
+            v = true;
+          }
+          else {
+            v = false;
+          }
+          return v;
+        });
+      },
+      isPathInView: function(path) {
+        return this.pathInView[path];
       },
       // Helper to determine if this profile has the 
       // the given path
       hasPath: function(v) {
         return _.gte(_.indexOf(this.paths, v), 0);
+      },
+      // Helper to set path content
+      setPathContentByPath: function(path, v) {
+        if (this.hasPath(path)) {
+          this.setPathContent(path, v);
+        }
       }
     };
 
