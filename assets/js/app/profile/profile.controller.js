@@ -28,9 +28,7 @@ angular.module('devlog.profile.controllers', [])
     ['$scope', 'lodash', 'Profile', '$uibModalInstance',
         function ($scope, _, Profile, $uibModalInstance) {
 
-
             $scope.formModel = {
-                id: '',
                 name: '',
                 paths: ['']
             };

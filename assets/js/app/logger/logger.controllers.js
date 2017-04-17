@@ -7,8 +7,9 @@ angular.module('devlog.logger.controllers', [])
 		$scope.watchers = _watchers;
 
 		// Open first watcher by default
-        _.first($scope.watchers).setOpened(true);
-
+		if (!_.isEmpty($scope.watchers)) {
+			_.first($scope.watchers).setOpened(true);
+		}
 
 		$scope.newLineCb = function(data) {
 			var watcher = _.find($scope.watchers, function(watcher) {

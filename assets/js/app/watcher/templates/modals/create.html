@@ -5,7 +5,6 @@
         </h3>
     </div>
     <div class="modal-body" id="modal-body">
-        <input type="hidden" ng-model='formModel.id' name='id' id='id'>
         <div class='form-group'>
             <label for='name'>Watcher name</label>
             <input 
@@ -18,20 +17,16 @@
                 required/>
         </div>
         <div class='form-group'>
-            <label for='name'>Initial lines</label>
+            <label for='lines'>Initial lines</label>
             <select 
-                class="form-control" 
+                class='form-control'
                 ng-required='true'
                 id="lines" 
                 name='lines' 
-                ng-model='formModel.lines'>
-                <option value='100' selected='selected'>100</option>
-                <option value='250'>250</option>
-                <option value='500'>500</option>
-                <option value='1000'>1000</option>
-                <option value='ALL'>ALL</option>
+                ng-model='formModel.lines'
+                ng-options='v.key as v.key for v in lineOptions track by v.value'>
             </select>
-            <span class='help-block'>Fetch the last {{formModel.lines}} lines of the file(s) to be tailed.</span>
+            <span class='help-block'>Fetch the last 'n' lines of the file(s) to be tailed.</span>
         </div>
         <div ng-repeat='profile in formModel.profiles track by $index' class='form-group'>
             <label for='profile-{{$index}}'>Profile {{$index + 1 }}</label>
@@ -46,7 +41,7 @@
                         <option 
                             ng-repeat="prof in profiles" 
                             value='{{prof.id}}'
-                            ng-selected='prof.id == profile.id'>
+                            ng-selected='{{prof.id == profile.id}}'>
                             {{prof.name}}
                         </option>
                     </select>

@@ -28,13 +28,13 @@ angular.module('devlog.profile.services', [])
 .factory('ProfileInterceptor', ['ProfileModel', 'lodash', function(ProfileModel, _) {
   return {
     response: function(response) {
-      if (_.isArray(response.data)) {
-        return _.map(response.data, function(v) {
+      if (_.isArray(response.resource)) {
+        return _.map(response.resource, function(v) {
           return new ProfileModel(v);
         });
       }
       else {
-        return ProfileModel(response.data);
+        return ProfileModel(response.resource);
       }
     }
   }
@@ -44,7 +44,7 @@ angular.module('devlog.profile.services', [])
   function(_) {
 
     var ProfileModel = function(data) {
-      angular.extend(this, data);
+      _.extend(this, data);
       this.pathInView = {};
       this.pathContents = {};
       this.pathInitialContentsLoaded = {};

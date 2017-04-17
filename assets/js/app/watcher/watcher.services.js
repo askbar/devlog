@@ -28,13 +28,13 @@ angular.module('devlog.watcher.services', [])
 .factory('WatcherInterceptor', ['WatcherModel', 'lodash', function(WatcherModel, _) {
   return {
     response: function(response) {
-      if (_.isArray(response.data)) {
-        return _.map(response.data, function(v) {
+      if (_.isArray(response.resource)) {
+        return _.map(response.resource, function(v) {
           return new WatcherModel(v);
         })
       }
       else {
-        return WatcherModel(response.data);
+        return WatcherModel(response.resource);
       }
     }
   }
@@ -43,7 +43,8 @@ angular.module('devlog.watcher.services', [])
 .factory('WatcherModel', ['lodash', 'ProfileModel', function(_, ProfileModel) {
 
     var WatcherModel = function(data) {
-      angular.extend(this, data);
+
+      _.extend(this, data);
       
       // Runtime props
       this.opened = false;

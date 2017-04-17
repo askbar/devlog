@@ -41,9 +41,24 @@ angular.module('devlog.watcher.controllers', [])
         function ($scope, _, Watcher, $uibModalInstance, _profiles) {
 
         	$scope.profiles = _profiles;
+            $scope.lineOptions = [{
+                key: 'ALL',
+                value: -1
+            }, {
+                key: '100',
+                value: 100
+            }, {
+                key: '250',
+                value: 250
+            }, {
+                key: '500',
+                value: 500
+            }, {
+                key: '1000',
+                value: 1000
+            }];
 
             $scope.formModel = {
-                id: '',
                 name: '',
                 lines: 100,
                 profiles: ['']
@@ -85,6 +100,23 @@ angular.module('devlog.watcher.controllers', [])
 .controller('WatcherEditController',
     ['$scope', 'lodash', 'Watcher', '$uibModalInstance', '_profiles', '_watcher',
         function ($scope, _, Watcher, $uibModalInstance, _profiles, _watcher) {
+
+            $scope.lineOptions = [{
+                key: 'ALL',
+                value: -1
+            }, {
+                key: '100',
+                value: 100
+            }, {
+                key: '250',
+                value: 250
+            }, {
+                key: '500',
+                value: 500
+            }, {
+                key: '1000',
+                value: 1000
+            }];
 
         	$scope.profiles = _profiles;
             $scope.formModel = _watcher;
