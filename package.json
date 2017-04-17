@@ -30,6 +30,7 @@
     "ng-annotate": "^1.2.1",
     "pug": "^2.0.0-beta11",
     "rc": "1.0.1",
+    "read-last-lines": "^1.1.2",
     "sails": "~0.12.13",
     "sails-disk": "~0.10.9",
     "sails-mongo": "^0.12.2",

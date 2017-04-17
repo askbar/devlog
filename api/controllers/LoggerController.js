@@ -3,6 +3,7 @@ var childProcess = require("child_process");
 var processPath = path.resolve(__dirname, '..', 'services/processes') + "/TailWorker";
 var _ = require('lodash');
 var fs = require('fs');
+var readLastLines = require('read-last-lines');
 
 module.exports = {
 
@@ -45,19 +46,19 @@ module.exports = {
 	},
 
 	read: function(req, res) {
+
 		var path = req.param('path');
+		var lines = req.param('lines') || 100;
+
 		if (_.isEmpty(path)) {
 			return res.json(500, {
 				message: 'path is empty'
 			});
 		}
-		fs.readFile(path, 'utf-8', function(err, data) {
-			if (err) {
-				return res.json(500, err);
-			}
+		readLastLines.read(path, lines).then(function(lines) {
 			return res.json(200, {
 				path: path,
-				lines: data.toString().split('\n')
+				lines: lines.split('\n')
 			});
 		});
 	},

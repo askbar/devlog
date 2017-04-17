@@ -45,6 +45,7 @@ angular.module('devlog.watcher.controllers', [])
             $scope.formModel = {
                 id: '',
                 name: '',
+                lines: 100,
                 profiles: ['']
             };
 
