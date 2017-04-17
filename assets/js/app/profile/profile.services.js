@@ -46,6 +46,7 @@ angular.module('devlog.profile.services', [])
     var ProfileModel = function(data) {
       angular.extend(this, data);
       this.pathContents = {};
+      this.currentlyViewedPath = -1;
       _.each(this.paths, function(path) {
         this.pathContents[path] = [];
       }.bind(this));
@@ -71,9 +72,18 @@ angular.module('devlog.profile.services', [])
         return this.pathContents[path];
       },
       setPathContent: function(path, v) {
-        var content = this.pathContents[path];
-        content.push(v);
-        this.pathContents[path] = content;
+        this.pathContents[path].push(v);
+      },
+      getCurrentlyViewedPath: function() {
+        return this.currentlyViewedPath;
+      },
+      setCurrentlyViewedPath: function(v) {
+        this.currentlyViewedPath = v;
+      },
+      // Helper to determine if this profile has the 
+      // the given path
+      hasPath: function(v) {
+        return _.gte(_.indexOf(this.paths, v), 0);
       }
     };
 

@@ -6,10 +6,17 @@ angular.module('devlog.logger.controllers', [])
 	
 		$scope.watchers = _watchers;
 
+		// Open first watcher by default
+        _.first($scope.watchers).setOpened(true);
+
+
 		$scope.newLineCb = function(data) {
-			console.log('newLineCb', data);
-			var watcher = _.find($scope.watchers, function(watcher) {
-				return _.eq(watcher.getId(), data.params.id);
+			$scope.$apply(function() {
+				var watcher = _.find($scope.watchers, function(watcher) {
+					return _.eq(watcher.getId(), data.params.id);
+				});
+				console.log('newLineCb', data, 'watcher', watcher);
+				watcher.setPathContentByPath(data.params.path, data.params.line);
 			});
 		};
 
@@ -36,6 +43,8 @@ angular.module('devlog.logger.controllers', [])
 		// Tail stopped
 		io.socket.on('stopTail', $scope.stopTailCb);
 
+
+		// Start or stop logging a watcher profile
 		$scope.action = function(watcher) {
 
 			if (!watcher.getStarted()) {
@@ -60,13 +69,17 @@ angular.module('devlog.logger.controllers', [])
 			watcher.setStarted(!watcher.getStarted());
 		};
 
+		$scope.view = function(e, watcher, profile) {
+			e.preventDefault();
+		};
+
 		$scope.$on('$destroy', function() {
 			
 			// Stop any ongoing watchers
 			_.each($scope.watchers, function(watcher) {
-					if (watcher.getStarted()) {
-						$scope.action(watcher);
-					}
+				if (watcher.getStarted()) {
+					$scope.action(watcher);
+				}
 			}); 
 
 			// Receving a message

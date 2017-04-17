@@ -90,6 +90,23 @@ angular.module('devlog.watcher.services', [])
           _.extend(paths, profile.getPaths());
         });
         return paths;
+      },
+      // Helper method to find all profiles that contain the given path
+      getProfilesByPath: function(path) {
+        var profiles = this.getProfiles();
+        return _.filter(profiles, function(profile) {
+           return profile.hasPath(path);
+        });
+      },
+      // Helper to set path content
+      setPathContentByPath: function(path, line) {
+        var profiles = this.getProfiles();
+        _.each(profiles, function(profile) {
+          if (profile.hasPath(path)) {
+            console.log('setPathContent for', profile);
+            profile.setPathContent(path, line);
+          }
+        });
       }
     };
 

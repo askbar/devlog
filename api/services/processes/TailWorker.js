@@ -21,7 +21,8 @@ process.on('message', function(msg) {
 			event: 'stopTail',
 			params: {
 				id: msg.params.id,
-				paths: msg.params.paths
+				paths: msg.params.paths,
+				pid: process.pid
 			}
 		});
 		
@@ -44,8 +45,10 @@ process.on('message', function(msg) {
 				process.send({
 					event: 'newLine',						
 					params: {
+						id: msg.params.id,
 						path: path,
-						line: data
+						line: data,
+						pid: process.pid
 					}
 				});
 			}

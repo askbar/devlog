@@ -25,16 +25,23 @@
 				<div class='panel-body'>
 					<div class='row'>
 						<div class='col-xs-4'>
-							<ul class="list-group">
-						  		<li ng-repeat='path in profile.paths' class="list-group-item">
-					        		<i class="glyphicon glyphicon-file"></i>
-						  			{{path}}
-				  				</li>
-							</ul>
+							<div class="list-group">
+					  			<a 
+					  				href='#' 
+					  				ng-repeat='path in profile.paths track by $index'
+					  				class='list-group-item'
+					  				ng-class='{"active": currentlyViewing == $index}'
+					  				ng-click='view($event, watcher, profile)'>
+			        				<i class="glyphicon glyphicon-file"></i>
+					  				{{path}}
+					  			</a>
+							</div>
 						</div>
 						<div class='col-xs-8'>
-							<div class='well'>
-								
+							<div class='well' ng-repeat='(key, lines) in profile.pathContents track by $index'>
+								<span ng-repeat='line in lines track by $index'>
+									{{line}}<br/>
+								</span>
 							</div>
 						</div>
 					</div>

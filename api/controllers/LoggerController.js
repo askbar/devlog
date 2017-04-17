@@ -12,8 +12,8 @@ module.exports = {
 		}
 		
 		var pid,
-				process,
-				params = req.param('params');
+			process,
+			params = req.param('params');
 
 		sails.sockets.join(req, params.id, function(err) {
 			
@@ -35,6 +35,7 @@ module.exports = {
 			return res.json(200, {
 				message: 'tailing all file paths registered under the profile ' + params.id,
 				data: {
+					id: params.id,
 					paths: params.paths,
 					pid: pid
 				}
