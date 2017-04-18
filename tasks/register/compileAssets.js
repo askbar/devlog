@@ -18,6 +18,7 @@ module.exports = function(grunt) {
     'jst:dev',
     'sass:dev',
     'copy:dev',
+    'jshint:dev',
     'ngAnnotate:dev',
     'ngtemplates:dev',
     'coffee:dev'

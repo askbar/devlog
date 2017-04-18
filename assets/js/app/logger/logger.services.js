@@ -15,7 +15,7 @@ angular.module('devlog.logger.services', [])
               method: 'GET',
               isArray: false
             }
-        }),\
+        }),
       };
     }]
   };

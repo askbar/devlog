@@ -37,7 +37,7 @@ angular.module('devlog.profile.services', [])
         return ProfileModel(response.resource);
       }
     }
-  }
+  };
 }])
 
 .factory('ProfileModel', ['lodash',

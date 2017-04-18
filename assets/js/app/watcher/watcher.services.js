@@ -31,13 +31,13 @@ angular.module('devlog.watcher.services', [])
       if (_.isArray(response.resource)) {
         return _.map(response.resource, function(v) {
           return new WatcherModel(v);
-        })
+        });
       }
       else if (_.isObject(response.resource)) {
         return WatcherModel(response.resource);
       }
     }
-  }
+  };
 }])
 
 .factory('WatcherModel', ['lodash', 'ProfileModel', function(_, ProfileModel) {

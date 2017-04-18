@@ -11,13 +11,14 @@
 	</button>
 </div>
 
-<div class='col-xs-12'>
-
-	<div ng-if='profiles.length === 0' class='alert alert-info'>
+<div class='col-xs-12' ng-if='profiles.length == 0'>
+	<div  class='alert alert-info'>
 		<p>No profiles found. <strong><a ui-sref='.create'>Create one.</a></strong></p>
 	</div>
+</div>
 
-	<div class='well' ng-if='profiles.length > 0'>
+<div class='col-xs-12' ng-if='profiles.length > 0'>
+	<div class='well'>
 		<table class="table table-condensed">
 			<thead>
 				<tr>

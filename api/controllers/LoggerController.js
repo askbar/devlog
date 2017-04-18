@@ -13,36 +13,36 @@ module.exports = {
 			return res.badRequest();
 		}
 		
-		var pid,
-				process,
-				operation = req.param('operation'),
+		var operation = req.param('operation'),
 				params = req.param('params');
 
 		if (_.eq(operation, 'startTail')) {
+
 			sails.sockets.join(req, params.id, function(err) {
 				
 				if (err) {
 					return res.json(500, err);
 				}
 				
-				process = childProcess.fork(processPath);
-				pid = process.pid;
+				var proc = childProcess.fork(processPath);
+				var pid = process.pid;
 
-				process.send({
+				console.log('forked process with pid', pid);
+
+				proc.send({
 					params: params
 				});
 
-				process.on('message', function(msg) {
-					sails.sockets.broadcast(params.id, msg.event, msg);
+				proc.on('message', function(msg) {
+					sails.sockets.broadcast(params.id, msg.event, msg, req);
 				});
-
-				console.log('start tail', pid);
 
 				return res.json(200, {
 					message: 'tailing all file paths registered under the profile ' + params.id,
 					data: {
 						id: params.id,
-						paths: params.paths
+						paths: params.paths,
+						pid: proc.pid
 					}
 				});
 			});
@@ -50,7 +50,8 @@ module.exports = {
 		else if (_.eq(operation, 'stopTail')) {
 
 			// kill process
-			process.kill(process.pid, 'SIGINT');
+			// process.kill(params.pid, 'SIGINT');
+
 			// Leave the broadcast channel
 			sails.sockets.leave(req, params.id);
 

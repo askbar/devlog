@@ -11,14 +11,20 @@
 	</button>
 </div>
 
-<div class='col-xs-12'>
-	<div ng-if='profiles.length == 0' class="alert alert-info" role="alert">
+<div class='col-xs-12' ng-if='profiles.length == 0'>
+	<div class="alert alert-info" role="alert">
 		<p>No profiles available. Click <strong><a href='#' ui-sref='profile.create'>here</a></strong> to set up a new profile.</p>
 	</div>
-	<div class='well' ng-if='profiles.length > 0'>
-		<div ng-if='watchers.length == 0' class="alert alert-info" role="alert">
-			No watchers found. <strong><a  href='#' ui-sref='.create'>Create one.</a></strong>
-		</div>
+</div>
+
+<div class='col-xs-12' ng-if='watchers.length == 0'>
+	<div class="alert alert-info" role="alert">
+		No watchers found. <strong><a  href='#' ui-sref='.create'>Create one.</a></strong>
+	</div>
+</div>
+
+<div class='col-xs-12' ng-if='watchers.length > 0'>
+	<div class='well'>
 		<table class='table table-condensed' ng-if='watchers.length > 0'>
 			<thead>
 				<tr>

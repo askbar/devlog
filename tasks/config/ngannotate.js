@@ -6,7 +6,10 @@ module.exports = function(grunt) {
   grunt.config.set('ngAnnotate', {
     options: {
       singleQuotes: true,
-      sourceMap: false
+      sourceMap: false,
+      ngAnnotateOptions: {
+        
+      }
     },
     dev: {
       files: {

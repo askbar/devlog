@@ -9,6 +9,7 @@ process.on('message', function(msg) {
 	}
 
 	this.tails = [];
+	
 	this.stopTail = function() {
 
 		console.log('stopTail');
