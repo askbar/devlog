@@ -7,6 +7,28 @@ var readLastLines = require('read-last-lines');
 
 module.exports = {
 
+	start: function(req, res) {
+		if (!req.isSocket) {
+			return res.badRequest();
+		}
+		var watcherId = req.param('id');
+
+		sails.sockets.join(req, watcherId, function(err) {
+			if (err) {
+				return res.json(500, err);
+			}
+			LoggerService.startTail(watcherId);
+		});
+
+	},
+
+	stop: function(req, res) {
+		if (!req.isSocket) {
+			return res.badRequest();
+		}
+
+	},
+
 	tail: function(req, res) {
 
 		if (!req.isSocket) {

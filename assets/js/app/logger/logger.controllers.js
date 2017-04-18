@@ -59,17 +59,23 @@ angular.module('devlog.logger.controllers', [])
 		// Start or stop logging a watcher profile
 		$scope.action = function(watcher) {
 
-			io.socket.get('/api/logger/tail', data, function(resData, jwres) {
-
-			});
-
-			Logger.tail({
-				operation: watcher.getStarted() ? 'stopTail': 'startTail',
-				params: {
-					id: watcher.getId(),
-					paths: watcher.getAllPaths()
-				}
-			});
+			if (watcher.getStarted()) {
+				Logger.stop({
+					id: watcher.getId()
+				});
+			}
+			else {
+				Logger.start({
+					id: watcher.getId()
+				});
+			}
+			// Logger.tail({
+			// 	operation: watcher.getStarted() ? 'stopTail': 'startTail',
+			// 	params: {
+			// 		id: watcher.getId(),
+			// 		paths: watcher.getAllPaths()
+			// 	}
+			// });
 		};
 
 		$scope.view = function(e, watcher, profile, path) {
