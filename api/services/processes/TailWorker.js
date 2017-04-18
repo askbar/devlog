@@ -77,10 +77,6 @@ process.on('message', function(msg) {
 
 });
 
-process.on('exit', function() {
-	this.stopTail();
-});
-
 process.on('SIGINT', function() {
 	console.log('process SIGINT');
 	this.stopTail();
