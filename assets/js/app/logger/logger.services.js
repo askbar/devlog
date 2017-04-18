@@ -5,8 +5,8 @@ angular.module('devlog.logger.services', [])
     $get: ['$resource', function($resource) {
       return {
         // Conect to a logger socket instance
-        start: function(data) {
-          io.socket.get('/api/logger/start', data, function(resData, jwres) {
+        tail: function(data) {
+          io.socket.get('/api/logger/tail', data, function(resData, jwres) {
             console.log('jwres', jwres);
           });
         },
@@ -15,13 +15,7 @@ angular.module('devlog.logger.services', [])
               method: 'GET',
               isArray: false
             }
-        }),
-        // Kill logger        
-        stop: function(data) {
-          io.socket.get('/api/logger/stop', data, function(resData, jwres) {
-            console.log('jwres', jwres);
-          });
-        }
+        }),\
       };
     }]
   };

@@ -72,8 +72,7 @@ angular.module('devlog.logger.controllers', [])
 				Logger.stop({
 					operation: 'stopTail', 
 					params: {
-						id: watcher.getId(),
-						pid: watcher.getPid()						
+						id: watcher.getId()
 					}
 				});
 			}
