@@ -82,7 +82,7 @@ module.exports = {
 			sails.sockets.leave(req, params.id);
 		});
 
-		process.kill(params.pid);
+		process.kill(params.pid, 'SIGINT');
 
 		return res.json(200, {
 			message: 'stopped tailing file paths in profile' + params.id
