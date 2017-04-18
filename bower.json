@@ -27,6 +27,10 @@
     "angular-sanitize": "~1.6.3",
     "angular-resource": "~1.6.3",
     "ngstorage": "~0.3.11",
-    "angular-bootstrap": "~2.5.0"
+    "angular-bootstrap": "~2.5.0",
+    "angular-loading": "^0.1.4"
+  },
+  "resolutions": {
+    "angular": "~1.6.3"
   }
 }

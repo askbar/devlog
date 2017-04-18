@@ -2,6 +2,10 @@
 
 	<h3>Logger</h3>
 
+	<div ng-if='watchers.length == 0' class="alert alert-info" role="alert">
+		No watch profiles available. Click <strong><a href='#' ui-sref='watcher'>here</a></strong> to set one up.
+	</div>
+
 	<uib-accordion ng-repeat='watcher in watchers' close-others="oneAtATime">
 	    <div uib-accordion-group class="panel-default" is-open="watcher.opened">
 			<uib-accordion-heading>

@@ -86,13 +86,14 @@ angular.module('devlog.logger.controllers', [])
 			profile.setPathInView(path); // Makes this path current
 
 			if (!profile.isInitialContentLoadedForPath(path)) {
-				Logger.read({
-					path: path
-				}, function(resData, jwres) {
-					// console.log('view', resData, jwres);
-					profile.setInitialContentLoadedForPath(path, true);
-					profile.setPathContentByPath(resData.path, resData.lines);
-					$scope.$apply();
+				Logger.contents.get({
+					path: path,
+					lines: watcher.getLines()
+				}).$promise.then(function(response) {
+					profile.setInitialContentLoadedForPath(response.path, true);
+					profile.setPathContentByPath(response.path, response.lines);
+				}, function(result) {
+					console.log('error', result);
 				});
 			}
 		};

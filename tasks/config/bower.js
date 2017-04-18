@@ -13,6 +13,18 @@ module.exports = function(grunt) {
                 keepExpandedHierarchy: false,
                 files: ['dist/jquery.js']
             },
+            'spin.js': {
+              keepExpandedHierarchy: false,
+              files: [
+                'spin.js'
+              ]
+            },
+            'angular-loading': {
+              keepExpandedHierarchy: false,
+              files: [
+                'angular-loading.js'
+              ]
+            },
             'bootstrap-sass': {
                 keepExpandedHierarchy: false,
                 files: [

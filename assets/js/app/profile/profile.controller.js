@@ -48,9 +48,7 @@ angular.module('devlog.profile.controllers', [])
                 var profile = new Profile($scope.formModel);
                 profile.$save().then(function (profile) {
                     // console.log('profile created', profile);
-                    $uibModalInstance.close({
-                        profile: profile
-                    });
+                    $uibModalInstance.close();
                 }, function (response) {
                     console.log('error', response);
                 });
@@ -63,8 +61,8 @@ angular.module('devlog.profile.controllers', [])
         }])
 
     .controller('ProfileEditController',
-    ['$uibModalInstance', '$scope', '$state', '$stateParams', 'Profile', '_profile', 'lodash',
-        function ($uibModalInstance, $scope, $state, $stateParams, Profile, _profile, _) {
+    ['$uibModalInstance', '$scope', '$state', '$stateParams', '_profile', 'lodash',
+        function ($uibModalInstance, $scope, $state, $stateParams, _profile, _) {
 
             $scope.formModel = _profile;
 
@@ -80,13 +78,10 @@ angular.module('devlog.profile.controllers', [])
             };
 
             $scope.edit = function() {
-                Profile.update({
+                $scope.formModel.$update({
                     id: $scope.formModel.id
-                }, $scope.formModel).$promise.then(function(response) {
-                    // console.log('profile updated', response);
-                    $uibModalInstance.close({
-                        profile: response
-                    });
+                }).then(function(response) {
+                    $uibModalInstance.close();
                 }, function(response) {
                     console.log('error', response);
                 });

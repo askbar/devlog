@@ -1,7 +1,7 @@
 angular.module('devlog.main.directives', [])
 
-.directive('fileBrowser', ['FileSystem', 'FileSystemUtils', 'lodash', 
-	function(FileSystem, FileSystemUtils, _) {
+.directive('fileBrowser', ['FileSystem', 'lodash', 
+	function(FileSystem, _) {
     return {
         restrict: 'E',
         replace: true,

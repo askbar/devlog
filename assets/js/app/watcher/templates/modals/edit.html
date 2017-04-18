@@ -25,7 +25,7 @@
                 id="lines" 
                 name='lines' 
                 ng-model='formModel.lines'
-                ng-options='v.value as v.key for v in lineOptions track by v.value'>
+                ng-options='v.value as v.key for v in lineOptions'>
             </select>
             <span class='help-block'>Fetch the last {{formModel.lines}} lines of the file(s) to be tailed.</span>
         </div>

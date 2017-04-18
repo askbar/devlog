@@ -14,6 +14,7 @@ angular.module('devlog.watcher.controllers', [])
         };
 
         $scope.delete = function (watcher) {
+            console.log(watcher);
             watcher.$delete({
                 id: watcher.id
             }).then(function (response) {
@@ -78,9 +79,7 @@ angular.module('devlog.watcher.controllers', [])
             $scope.create = function () {
                 var watcher = new Watcher($scope.formModel);
                 watcher.$save().then(function (watcher) {
-                    $uibModalInstance.close({
-                        watcher: watcher
-                    });
+                    $uibModalInstance.close();
                 }, function (response) {
                     console.log('error', response);
                 });
@@ -98,8 +97,8 @@ angular.module('devlog.watcher.controllers', [])
         }])
 
 .controller('WatcherEditController',
-    ['$scope', 'lodash', 'Watcher', '$uibModalInstance', '_profiles', '_watcher',
-        function ($scope, _, Watcher, $uibModalInstance, _profiles, _watcher) {
+    ['_profiles', '_watcher', '$scope', 'lodash', '$uibModalInstance', 
+        function (_profiles, _watcher, $scope, _, $uibModalInstance) {
 
             $scope.lineOptions = [{
                 key: 'ALL',
@@ -132,12 +131,10 @@ angular.module('devlog.watcher.controllers', [])
             };
 
             $scope.edit = function() {
-                Watcher.update({
+                $scope.formModel.$update({
                     id: $scope.formModel.id
-                }, $scope.formModel).$promise.then(function(response) {
-                    $uibModalInstance.close({
-                        watcher: response
-                    });
+                }).then(function(response) {
+                    $uibModalInstance.close();
                 }, function(response) {
                     console.log('error', response);
                 });

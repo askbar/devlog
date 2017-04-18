@@ -55,6 +55,7 @@ module.exports = {
 				message: 'path is empty'
 			});
 		}
+
 		readLastLines.read(path, lines).then(function(lines) {
 			return res.json(200, {
 				path: path,

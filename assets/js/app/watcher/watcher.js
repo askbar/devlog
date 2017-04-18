@@ -10,11 +10,7 @@ angular.module('devlog.watcher', [
         url: '/watcher',
         parent: 'devlog',
         reloadOnSearch: false,
-        params: {
-          watcher: {
-            value: null
-          }
-        },
+        params: {},
         resolve: {
           _profiles: ['Profile', function(Profile) {
             return Profile.query().$promise;
@@ -45,7 +41,9 @@ angular.module('devlog.watcher', [
               }
             }
           }).result.then(function(result) {
-            $state.go('^', result);
+            $state.go('^', {}, {
+              reload: true
+            });
           }, function() {
             $state.go('^');
           });
@@ -63,16 +61,18 @@ angular.module('devlog.watcher', [
             controller: 'WatcherEditController',
             resolve: {
               _profiles: ['Profile', function(Profile) {
-                return Profile.query().$promise;
+                return Profile.query();
               }],
               _watcher: ['Watcher', function(Watcher) {
                 return Watcher.get({
                   id: watcherId
-                }).$promise;
+                });
               }]
             }
           }).result.then(function(result) {
-            $state.go('^', result);
+            $state.go('^', {}, {
+              reload: true
+            });
           }, function() {
             $state.go('^');
           });

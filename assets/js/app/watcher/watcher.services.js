@@ -33,7 +33,7 @@ angular.module('devlog.watcher.services', [])
           return new WatcherModel(v);
         })
       }
-      else {
+      else if (_.isObject(response.resource)) {
         return WatcherModel(response.resource);
       }
     }
@@ -66,6 +66,12 @@ angular.module('devlog.watcher.services', [])
       },
       getProfiles: function() {
         return this.profiles;
+      },
+      getLines: function() {
+        return this.lines;
+      },
+      setLines: function(v) {
+        this.lines = v;
       },
       getStarted: function() {
         return this.started;

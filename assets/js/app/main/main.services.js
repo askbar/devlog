@@ -1,5 +1,9 @@
 angular.module('devlog.main.services', [])
 
+.config(['$httpProvider', function($httpProvider) {
+  $httpProvider.interceptors.push('$devlogHttpInterceptor');
+}])
+
 .run(['lodash', 'moment', 'jquery', '$log',
   function(_, moment, $, $log) {
     $log.debug('angular', angular.version.full);
@@ -66,13 +70,23 @@ angular.module('devlog.main.services', [])
   };
 })
 
-.factory('FileSystemUtils', ['lodash', function(_) {
+.factory('$devlogHttpInterceptor', ['lodash', '$rootScope', '$q', '$log', function(_, $rootScope, $q, $log) {
   return {
-    escapePath: function(path) {
-      if (_.isEmpty(path)) {
-        return path;
-      }
-      return path.replace(/\\/g, "\\\\");
+    request: function(config) {
+      $rootScope.$emit('$startLoading');
+      return config;
+    },
+    response: function(response) {
+      $rootScope.$emit('$stopLoading');
+      return response;
+    },
+    requestError: function(rejection) {
+      $rootScope.$emit('$stopLoading');
+      return $q.reject(rejection);
+    },
+    responseError: function(rejection) {
+      $rootScope.$emit('$stopLoading');
+      return $q.reject(rejection);
     }
   };
 }]);

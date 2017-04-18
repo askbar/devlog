@@ -6,7 +6,8 @@ angular.module('devlog', [
   'ngStorage',
   'ui.router',
   'ui.bootstrap',
-
+  'darthwade.dwLoading',
+  
   // App templates
   'devlog.templates',
 

@@ -34,9 +34,11 @@ angular.module('devlog.profile', [
             templateUrl: 'assets/js/app/profile/templates/modals/create',
             controller: 'ProfileCreateController'
           }).result.then(function (result) {
-            $state.go('^', result);
+            $state.go('profile', {}, {
+              reload: true
+            });
           }, function () {
-            $state.go('^');
+            $state.go('profile');
           });
         }],
       })
@@ -57,13 +59,15 @@ angular.module('devlog.profile', [
               _profile: ['Profile', function (Profile) {
                 return Profile.get({
                   id: profileId
-                }).$promise;
+                });
               }]
             }
           }).result.then(function (result) {
-            $state.go('^', result);
+            $state.go('profile', {}, {
+              reload: true
+            });
           }, function () {
-            $state.go('^');
+            $state.go('profile');
           });
         }]
       });
