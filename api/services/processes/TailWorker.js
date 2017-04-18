@@ -82,6 +82,12 @@ process.on('exit', function() {
 });
 
 process.on('SIGINT', function() {
+	console.log('process SIGINT');
+	this.stopTail();
+});
+
+process.on('SIGHUP', function() {
+	console.log('process SIGHUP');
 	this.stopTail();
 });
 

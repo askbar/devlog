@@ -1,26 +1,29 @@
-<div class='col-md-12'>
+<div class='col-xs-10'>
 	<h3>
-		Watchers
-		<button ng-if='profiles.length > 0 && watchers.length > 0' type='button' class='btn btn-info pull-right' ui-sref='.create'>
-			<span class='glyphicon glyphicon-plus'></span>
-			New Watcher
-		</button>
+		Watchers<br/>
+		<small>Create watchers that can include one or more different profiles.</small>
 	</h3>
 </div>
+<div class='col-xs-2'>
+	<button ng-if='profiles.length > 0 && watchers.length > 0' type='button' class='btn btn-info pull-right' ui-sref='.create'>
+		<span class='glyphicon glyphicon-plus'></span>
+		<span class='hidden-xs'>New Watcher</span>
+	</button>
+</div>
 
-<div class='col-md-12'>
+<div class='col-xs-12'>
 	<div ng-if='profiles.length == 0' class="alert alert-info" role="alert">
-		No profiles available. Click <strong><a href='#' ui-sref='profile.create'>here</a></strong> to set up a new profile.
+		<p>No profiles available. Click <strong><a href='#' ui-sref='profile.create'>here</a></strong> to set up a new profile.</p>
 	</div>
-	<div ng-if='profiles.length > 0'>
+	<div class='well' ng-if='profiles.length > 0'>
 		<div ng-if='watchers.length == 0' class="alert alert-info" role="alert">
 			No watchers found. <strong><a  href='#' ui-sref='.create'>Create one.</a></strong>
 		</div>
-		<table class='table table-hover' ng-if='watchers.length > 0'>
+		<table class='table table-condensed' ng-if='watchers.length > 0'>
 			<thead>
 				<tr>
 					<th>Watcher name</th>
-					<th>Profiles</th>
+					<th class='hidden-xs'>Profiles</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -31,7 +34,7 @@
 							{{watcher.getName()}}
 						</a>
 					</th>
-					<td>
+					<td class='hidden-xs'>
 						<p ng-repeat='profile in watcher.profiles'>
 							<a href='#' ui-sref='profile.edit({id: profile.id})'>{{profile.getName()}}</a>
 						</p>

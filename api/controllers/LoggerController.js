@@ -34,6 +34,8 @@ module.exports = {
 				sails.sockets.broadcast(params.id, msg.event, msg);
 			});
 
+			console.log('start tail', pid);
+
 			return res.json(200, {
 				message: 'tailing all file paths registered under the profile ' + params.id,
 				data: {
@@ -71,15 +73,19 @@ module.exports = {
 		}
 
 		var params = req.param('params');
-		process.kill(params.pid, 'SIGINT');
+		console.log('params', params.pid);
 
-		sails.sockets.leave(req, params.id, function(err) {
-			if (err) {
-				return res.json(500, err);
-			}
-			return res.json(200, {
-				message: 'stopped tailing file paths in profile' + params.id
-			});
+		process.on('message', function(msg) {
+			// Transmit the final message that the process is killed
+			sails.sockets.broadcast(params.id, msg.event, msg);
+			// Leave the broadcast channel
+			sails.sockets.leave(req, params.id);
+		});
+
+		process.kill(params.pid);
+
+		return res.json(200, {
+			message: 'stopped tailing file paths in profile' + params.id
 		});
 
 	}
