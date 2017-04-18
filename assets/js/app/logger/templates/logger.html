@@ -1,13 +1,16 @@
 <div class='col-xs-12'>
 
-	<h3>Logger</h3>
+	<h3>
+		Logger<br/>	
+		<small>Live tail of files described in watch profiles</small>
+	</h3>
 
 	<div ng-if='watchers.length == 0' class="alert alert-info" role="alert">
 		No watch profiles available. Click <strong><a href='#' ui-sref='watcher'>here</a></strong> to set one up.
 	</div>
 
 	<uib-accordion ng-repeat='watcher in watchers' close-others="oneAtATime">
-	    <div uib-accordion-group class="panel-default" is-open="watcher.opened">
+	    <div ng-if='watcher.profiles.length > 0' uib-accordion-group class="panel-default" is-open="watcher.opened">
 			<uib-accordion-heading>
 	        	{{watcher.name}} 
 	        	<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': watcher.getOpened(), 'glyphicon-chevron-right': !watcher.getOpened()}"></i>
@@ -49,6 +52,9 @@
 					</div>
 				</div>
 			</div>
+	    </div>
+	    <div ng-if='watcher.profiles.length == 0' class='alert alert-warning'>
+	    	<p>The watch profile {{watcher.getName()}} has no profiles assigned. Click <strong><a href='#' ui-sref='watcher'>here</a></strong> to fix it.</p>
 	    </div>
 	</uib-accordion>
 
