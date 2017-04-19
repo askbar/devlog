@@ -25,31 +25,26 @@ angular.module('devlog.main.controllers', [])
 			$scope.$apply(function() {
 				$rootScope.$broadcast('$socketStopTail', data);
 			});
-
+		};
+		$scope.tailErrorCb = function(data) {
+			$scope.$apply(function() {
+				$rootScope.$broadcast('$socketTailError', data);
+			});
 		};
 
-		// Receving a message
 		io.socket.on('newLine', $scope.newLineCb);
-		// Tail started
 		io.socket.on('startTail', $scope.startTailCb);
-		// Tail stopped
 		io.socket.on('stopTail', $scope.stopTailCb);
-
+		io.socket.on('tailError', $scope.tailErrorCb);
 
 		$scope.$on('$destroy', function() {
-
-			// Receving a message
 			io.socket.off('newLine', $scope.newLineCb);
-			// Tail started
 			io.socket.off('startTail', $scope.startTailCb);
-			// Tail stopped
 			io.socket.off('stopTail', $scope.stopTailCb);
-
+			io.socket.off('tailError', $scope.tailErrorCb);
 			startLoadingListener();
 			stopLoadingListener();
-
 		});
-
 	}
 ])
 

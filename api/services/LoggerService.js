@@ -6,66 +6,81 @@ var _pool = {};
 module.exports = {
 
   startTail: function(id, req, cb) {
-    	
-      Watcher.findOne({
-        id: id
-      })
-  		.populate('profiles')
-  		.exec(function (err, watcher) {
-    	  
-        if (err) {
-          return cb(err, null);
-    	  }
 
-        // Create an entry in the pool
-        _pool[id] = [];
+      // If the pool already has this watcher id,
+      // stop the ongoing tail process first before starting a new one
+      if (_.has(_pool, id)) {
+        this.stopTail(id, req, function() {
+          this.startTail(id, req, cb);
+        }.bind(this));
+      }
+      else {
+        Watcher.findOne({
+          id: id
+        })
+    		.populate('profiles')
+    		.exec(function (err, watcher) {
+      	  
+          if (err) {
+            return cb(err, null);
+      	  }
 
-        var profiles = watcher.profiles;
-  
-        sails.sockets.join(req, id, function(error) {
+          // Create an entry in the pool
+          _pool[id] = [];
 
-          _.each(profiles, function(profile) {
-            var paths = profile.paths;
-            _.each(paths, function(path) {
+          var profiles = watcher.profiles;
+    
+          sails.sockets.join(req, id, function(error) {
 
-              var tail = new Tail(path, {
-                fromBeginning: false
-              });
+            _.each(profiles, function(profile) {
+              var paths = profile.paths;
+              _.each(paths, function(path) {
 
-              tail.on('line', function(data) {
-                sails.sockets.broadcast(id, 'newLine', {
-                  id: id,
-                  line: data,
-                  path: path
+                var tail = new Tail(path, {
+                  fromBeginning: false
                 });
-              });
 
-              tail.on('error', function(error) {
-                sails.sockets.broadcast(id, 'tailError', {
-                  id: id,
-                  error: error,
-                  path: path
+                tail.on('line', function(data) {
+                  sails.sockets.broadcast(id, 'newLine', {
+                    id: id,
+                    line: data,
+                    path: path
+                  });
                 });
+
+                tail.on('error', function(error) {
+                  sails.sockets.broadcast(id, 'tailError', {
+                    id: id,
+                    error: error,
+                    path: path
+                  });
+                });
+
+                // Store the tail object under the pool id
+                _pool[id].push(tail);
+
               });
+            });
 
-              // Store the tail object under the pool id
-              _pool[id].push(tail);
+            // Update watcher model instance
+            watcher.tailing = true;
 
+            watcher.save(function(error) {
+              
+              if (error) {
+                return cb(err, null);
+              }
+
+              sails.sockets.broadcast(id, 'startTail', {
+                message: 'started tailing ' + watcher.name,
+                watcher: watcher
+              });
+              
+              cb(null, watcher);
             });
           });
-
-          // Update watcher model instance
-          watcher.tailing = true;
-
-          watcher.save(function(error) {
-            if (error) {
-              return cb(err, null);
-            }
-            sails.sockets.broadcast(id, 'startTail', watcher);
-            cb(null, watcher);
-          });
-        });
-    	});
+      	});
+      }
   },
 
   stopTail: function(id, req, cb) {
@@ -94,10 +109,18 @@ module.exports = {
           return cb(error, null);
         }
         
-        sails.sockets.broadcast(id, 'stopTail', watcher);
-        sails.sockets.leave(req, id, function(err) {
-          return cb(null, watcher);
+        sails.sockets.broadcast(id, 'stopTail', {
+            message: 'stop tailing ' + watcher.name,
+            watcher: watcher
         });
+
+        sails.sockets.leave(req, id, function(err) {
+          return cb(null, {
+            message: 'stop tailing ' + watcher.name,
+            watcher: watcher
+          });
+        });
+
       });
     });
   }

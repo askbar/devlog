@@ -6,15 +6,10 @@ angular.module('devlog.logger.controllers', [])
 	
 		$scope.watchers = _watchers;
 
-		// Open first watcher by default
-		if (!_.isEmpty($scope.watchers)) {
-			_.first($scope.watchers).setOpened(true);
-		}
-
 		var startTailEvent = $rootScope.$on('$socketStartTail', function(e, data) {
 			$scope.watchers = _.map($scope.watchers, function(watcher) {
-				if (_.eq(watcher.getId(), data.id)) {
-					watcher.setTailing(data.tailing);
+				if (_.eq(watcher.getId(), data.watcher.id)) {
+					watcher.setTailing(data.watcher.tailing);
 				}
 				return watcher;
 			});
@@ -30,16 +25,19 @@ angular.module('devlog.logger.controllers', [])
 
 		var stopTailEvent = $rootScope.$on('$socketStopTail', function(e, data) {
 			$scope.watchers = _.map($scope.watchers, function(watcher) {
-				if (_.eq(watcher.getId(), data.id)) {
-					watcher.setTailing(data.tailing);
+				if (_.eq(watcher.getId(), data.watcher.id)) {
+					watcher.setTailing(data.watcher.tailing);
 				}
 				return watcher;
 			});
 		});
 
+		var tailErrorEvent = $rootScope.$on('$socketTailError', function(e, data) {
+			console.log('tailErrorEvent', data);
+		});
+
 		// Start or stop logging a watcher profile
 		$scope.action = function(watcher) {
-
 			if (watcher.getTailing()) {
 				Logger.stop({
 					id: watcher.getId()
@@ -70,10 +68,25 @@ angular.module('devlog.logger.controllers', [])
 			}
 		};
 
+		// Open first watcher by default
+		if (!_.isEmpty($scope.watchers)) {
+			_.each($scope.watchers, function(watcher) {
+				if (watcher.getTailing()) {
+					watcher.setOpened(true);
+					$scope.action(watcher);
+				}
+				else if (watcher.getAutomatic()) {
+					watcher.setOpened(true);
+					$scope.action(watcher);
+				}
+			});
+		}
+
 		$scope.$on('$destroy', function() {
 			startTailEvent();
 			stopTailEvent();
 			newLineEvent();
+			tailErrorEvent();
 			$scope.watchers = null;
 		});
 
