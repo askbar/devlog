@@ -8,25 +8,34 @@ var readLastLines = require('read-last-lines');
 module.exports = {
 
 	start: function(req, res) {
+
 		if (!req.isSocket) {
 			return res.badRequest();
 		}
+    	
 		var watcherId = req.param('id');
 
-		sails.sockets.join(req, watcherId, function(err) {
+		LoggerService.startTail(watcherId, req, function(err, data) {
 			if (err) {
 				return res.json(500, err);
 			}
-			LoggerService.startTail(watcherId);
+			return res.json(200, data);
 		});
-
 	},
 
 	stop: function(req, res) {
+
 		if (!req.isSocket) {
 			return res.badRequest();
 		}
 
+		var watcherId = req.param('id');
+		LoggerService.stopTail(watcherId, req, function(err, data) {
+			if (err) {
+				return res.json(500, err);
+			}
+			return res.json(200, data);
+		});
 	},
 
 	tail: function(req, res) {

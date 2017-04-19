@@ -30,6 +30,7 @@
 				<tr>
 					<th>Watcher name</th>
 					<th class='hidden-xs'>Profiles</th>
+					<th>Starts automatically</th>
 					<th>Actions</th>
 				</tr>
 			</thead>
@@ -46,11 +47,20 @@
 						</p>
 					</td>
 					<td>
+						<span ng-if='watcher.getAutomatic()' class='glyphicon glyphicon-ok'></span>
+						<span ng-if='!watcher.getAutomatic()' class='glyphicon glyphicon-remove'></span>
+					</td>
+					<td>
 						<button type='button' ng-click='delete(watcher)' class='btn btn-danger'>
 							<span class='glyphicon glyphicon-trash'></span>
 						</button>
-						<button type='button' ng-click='log(watcher)' class='btn btn-primary'>
-							<span class='glyphicon glyphicon-play'></span>
+						<button 
+							type='button' 
+							ng-click='log(watcher)' 
+							class='btn'
+							ng-class='{"btn-primary": !watcher.getTailing(), "btn-danger": watcher.getTailing()}'>
+							<span ng-if='!watcher.getTailing()' class='glyphicon glyphicon-play'></span>
+							<span ng-if='watcher.getTailing()' class='glyphicon glyphicon-stop'></span>
 						</button>
 					</td>
 				</tr>

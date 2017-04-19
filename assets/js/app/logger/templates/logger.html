@@ -17,10 +17,10 @@
 			</uib-accordion-heading>
 			<div class='row'>
 				<div class='col-xs-12'>
-					<button type='button' class='btn' ng-class='{"btn-primary": !watcher.getStarted(), "btn-danger": watcher.getStarted() }' ng-click='action(watcher)'>
-						<span ng-class='{"glyphicon glyphicon-play": !watcher.getStarted(), "glyphicon glyphicon-stop": watcher.getStarted() }'></span>
-						<span ng-if='!watcher.getStarted()'>Start</span>
-						<span ng-if='watcher.getStarted()'>Stop</span>
+					<button type='button' class='btn' ng-class='{"btn-primary": !watcher.tailing, "btn-danger": watcher.tailing }' ng-click='action(watcher)'>
+						<span ng-class='{"glyphicon glyphicon-play": !watcher.tailing, "glyphicon glyphicon-stop": watcher.tailing }'></span>
+						<span ng-if='!watcher.tailing'>Start</span>
+						<span ng-if='watcher.tailing'>Stop</span>
 					</button>
 				</div>
 			</div>

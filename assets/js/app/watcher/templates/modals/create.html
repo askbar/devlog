@@ -28,6 +28,19 @@
             </select>
             <span class='help-block'>Fetch the last 'n' lines of the file(s) to be tailed.</span>
         </div>
+        <div class="checkbox">
+            <label>
+                <input 
+                    type='checkbox'
+                    required
+                    id='automatic'
+                    name='automatic'
+                    ng-model='formModel.automatic'>
+                Start automatically
+            </label>
+        </div>
+        <div class='form-group'>
+        </div>
         <div ng-repeat='profile in formModel.profiles track by $index' class='form-group'>
             <label for='profile-{{$index}}'>Profile {{$index + 1 }}</label>
             <div class='row'>

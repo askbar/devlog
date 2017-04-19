@@ -1,8 +1,8 @@
 angular.module('devlog.logger.controllers', [])
 
 .controller('LoggerController', [
-	'$scope', '_watchers', 'lodash', 'Logger',
-	function($scope, _watchers, _, Logger) {
+	'$scope', '$rootScope', '_watchers', 'lodash', 'Logger',
+	function($scope, $rootScope, _watchers, _, Logger) {
 	
 		$scope.watchers = _watchers;
 
@@ -11,55 +11,36 @@ angular.module('devlog.logger.controllers', [])
 			_.first($scope.watchers).setOpened(true);
 		}
 
-		$scope.newLineCb = function(data) {
-			var watcher = _.find($scope.watchers, function(watcher) {
-				return _.eq(watcher.getId(), data.params.id);
+		var startTailEvent = $rootScope.$on('$socketStartTail', function(e, data) {
+			$scope.watchers = _.map($scope.watchers, function(watcher) {
+				if (_.eq(watcher.getId(), data.id)) {
+					watcher.setTailing(data.tailing);
+				}
+				return watcher;
 			});
-			console.log('newLineCb', data, 'watcher', watcher);
-			watcher.setPathContentByPath(data.params.path, data.params.line);
-			$scope.$apply();
-		};
+		});
 
-		$scope.startTailCb = function(data) {
-
-			console.log('startTailCb', data);
-
+		var newLineEvent = $rootScope.$on('$socketNewLine', function(e, data) {
 			var watcher = _.find($scope.watchers, function(watcher) {
-				return _.eq(watcher.getId(), data.params.id);
+				return _.eq(watcher.getId(), data.id);
 			});
+			console.log('newLineEvent', data, 'watcher', watcher);
+			watcher.setPathContentByPath(data.path, data.line);	
+		});
 
-			watcher.setStarted(true);
-			watcher.setPid(data.params.pid);
-
-			$scope.$apply();
-		};
-
-		$scope.stopTailCb = function(data) {
-			
-			console.log('stopTailCb', data);
-
-			var watcher = _.find($scope.watchers, function(watcher) {
-				return _.eq(watcher.getId(), data.params.id);
+		var stopTailEvent = $rootScope.$on('$socketStopTail', function(e, data) {
+			$scope.watchers = _.map($scope.watchers, function(watcher) {
+				if (_.eq(watcher.getId(), data.id)) {
+					watcher.setTailing(data.tailing);
+				}
+				return watcher;
 			});
-
-			watcher.setStarted(false);
-			watcher.setPid(null);
-
-			$scope.$apply();
-		};
-
-		// Receving a message
-		io.socket.on('newLine', $scope.newLineCb);
-		// Tail started
-		io.socket.on('startTail', $scope.startTailCb);
-		// Tail stopped
-		io.socket.on('stopTail', $scope.stopTailCb);
-
+		});
 
 		// Start or stop logging a watcher profile
 		$scope.action = function(watcher) {
 
-			if (watcher.getStarted()) {
+			if (watcher.getTailing()) {
 				Logger.stop({
 					id: watcher.getId()
 				});
@@ -69,13 +50,6 @@ angular.module('devlog.logger.controllers', [])
 					id: watcher.getId()
 				});
 			}
-			// Logger.tail({
-			// 	operation: watcher.getStarted() ? 'stopTail': 'startTail',
-			// 	params: {
-			// 		id: watcher.getId(),
-			// 		paths: watcher.getAllPaths()
-			// 	}
-			// });
 		};
 
 		$scope.view = function(e, watcher, profile, path) {
@@ -97,21 +71,9 @@ angular.module('devlog.logger.controllers', [])
 		};
 
 		$scope.$on('$destroy', function() {
-			
-			// Stop any ongoing watchers
-			_.each($scope.watchers, function(watcher) {
-				if (watcher.getStarted()) {
-					$scope.action(watcher);
-				}
-			}); 
-
-			// Receving a message
-			io.socket.off('newLine', $scope.newLineCb);
-			// Tail started
-			io.socket.off('startTail', $scope.startTailCb);
-			// Tail stopped
-			io.socket.off('stopTail', $scope.stopTailCb);
-
+			startTailEvent();
+			stopTailEvent();
+			newLineEvent();
 			$scope.watchers = null;
 		});
 

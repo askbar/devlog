@@ -48,8 +48,6 @@ angular.module('devlog.watcher.services', [])
       
       // Runtime props
       this.opened = false;
-      this.started = false;
-      this.pid = null;
 
       this.profiles = _.map(this.profiles, function(profile) {
         return new ProfileModel(profile);
@@ -73,23 +71,23 @@ angular.module('devlog.watcher.services', [])
       setLines: function(v) {
         this.lines = v;
       },
-      getStarted: function() {
-        return this.started;
-      },
-      setStarted: function(v) {
-        this.started = v;
-      },
       getOpened: function() {
         return this.opened;
       },
       setOpened: function(v) {
         this.opened = v;
       },
-      getPid: function() {
-        return this.pid;
+      getAutomatic: function() {
+        return this.automatic;
       },
-      setPid: function(v) {
-        this.pid = v;
+      setAutomatic: function(v) {
+        this.automatic = v;
+      },
+      getTailing: function() {
+        return this.tailing;
+      },
+      setTailing: function(v) {
+        this.tailing = v;
       },
       getAllPaths: function() {
         var paths = [];
