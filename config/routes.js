@@ -55,10 +55,6 @@ module.exports.routes = {
     controller: 'FileSystemController',
     action: 'up'
   },
-  'GET /api/logger/tail': {
-    controller: 'LoggerController',
-    action: 'tail'
-  },
   'GET /api/logger/start': {
     controller: 'LoggerController',
     action: 'start'

@@ -76,7 +76,10 @@ module.exports = {
                 watcher: watcher
               });
               
-              cb(null, watcher);
+              cb(null, {
+                message: 'started tailing ' + watcher.name,
+                watcher: watcher
+              });
             });
           });
       	});
