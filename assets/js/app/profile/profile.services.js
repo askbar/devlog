@@ -44,15 +44,19 @@ angular.module('devlog.profile.services', [])
   function(_) {
 
     var ProfileModel = function(data) {
+      
       _.extend(this, data);
+
       this.pathInView = {};
       this.pathContents = {};
       this.pathInitialContentsLoaded = {};
+
       _.each(this.paths, function(path, index) {
         this.pathInView[path] = false;
         this.pathContents[path] = [];
         this.pathInitialContentsLoaded[path] = false;
       }.bind(this));
+
     };
 
     ProfileModel.prototype = {
@@ -81,12 +85,6 @@ angular.module('devlog.profile.services', [])
         else if (_.isString(v)) {
           this.pathContents[path].push(v);
         }
-      },
-      getPathInitialContentsLoaded: function() {
-        return this.pathInitialContentsLoaded;
-      },
-      setPathInitialContentsLoaded: function(path, v) {
-        this.pathInitialContentsLoaded = v;
       },
       setInitialContentLoadedForPath: function(path, v) {
         this.pathInitialContentsLoaded[path] = v;

@@ -1,0 +1,68 @@
+.nav-tabs {
+
+
+	> li {
+		> a {
+
+			&:hover {
+
+			}
+		}
+	
+		&.active > a {
+			&,
+			&:hover,
+			&:focus {
+				background-color: #002B36;
+				color: #93A1A1;
+				border: 1px solid #002B36;
+			}
+		}
+	}
+
+}
+
+.nav-justified {
+
+}
+
+.nav-tabs-justified {
+
+  > li > a {
+	
+	border-bottom-color: #002B36;
+    border-radius: 0;
+    color: #586E75;
+
+    &:hover {
+		background-color: #FDF6E3;
+		color: #D33682;
+		border: 1px solid #FDF6E3;
+    }
+  }
+
+  > .active > a,
+  > .active > a:focus {
+    border: 1px solid transparent;
+    color: #93A1A1;
+  }
+
+  > .active > a:hover {
+	background-color: #002B36;
+	color: #93A1A1;
+	border: 1px solid #002B36;
+  }
+
+
+  @media (min-width: $screen-sm-min) {
+    > li > a {
+      border-bottom: 1px solid #002B36;
+      border-radius: 0;
+    }
+    > .active > a,
+    > .active > a:hover,
+    > .active > a:focus {
+		border-bottom-color: #002B36;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+pre.tail {
+
+	background-color: #002B36;
+	color: #EEE8D5;
+	
+	border-top: none;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	
+	counter-reset: line;
+	
+	padding-bottom: 15px;
+	max-height: 500px;
+	overflow: auto;
+
+	span {
+		&:before {
+		  counter-increment: line;
+		  content: counter(line);
+		  display: inline-block;
+		  border-right: 1px solid #ddd;
+		  padding: 0 .5em;
+		  margin-right: .5em;
+		  color: #2AA198;
+		  width: 55px;
+		}
+
+	  display: block;
+	  line-height: 1.5rem;
+
+	  &.last {
+	  	background-color: #586E75;
+		  color: #FDF6E3;
+
+	  }
+
+	}
+}

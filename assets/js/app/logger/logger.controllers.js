@@ -50,10 +50,9 @@ angular.module('devlog.logger.controllers', [])
 			}
 		};
 
-		$scope.view = function(e, watcher, profile, path) {
-			e.preventDefault();
-			
-			profile.setPathInView(path); // Makes this path current
+		$scope.view = function(watcher, profile, path) {
+
+			console.log('view', watcher, profile, path);
 
 			if (!profile.isInitialContentLoadedForPath(path)) {
 				Logger.contents.get({

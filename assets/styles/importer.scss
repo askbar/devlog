@@ -19,29 +19,6 @@ $icon-font-path: "../fonts/" !default;
 @import '../../bower_components/angular-bootstrap/ui-bootstrap-csp';
 @import '../../bower_components/angular-loading/angular-loading';
 
-
-pre.tail {
-  font-family: monospace;
-  background-color: #fff;
-  margin: auto;
-  padding: 0.5em;
-  border-radius: .25em;
-  box-shadow: .1em .1em .5em rgba(0,0,0,.45);
-  line-height: 0;
-  counter-reset: line;
-  
-  span {
-    display: block;
-    line-height: 1.5rem;
-    
-    &:before {
-      counter-increment: line;
-      content: counter(line);
-      display: inline-block;
-      border-right: 1px solid #ddd;
-      padding: 0 .5em;
-      margin-right: .5em;
-      color: #888
-    }
-  }
-}
+// Overrides
+@import './components/code';
+@import './components/navs';
