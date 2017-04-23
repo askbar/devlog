@@ -4,6 +4,16 @@ var async = require('async');
 var _ = require('lodash');
 
 module.exports = {
+
+	fileExists: function(p, cb) {
+		fs.access(p, fs.constants.F_OK | fs.constants.R_OK, function(err) {
+			if (err) {
+				return cb(err);
+			}
+			return cb(null, p);
+		});
+	},
+
 	process: function(_p, callback) {
 		var files = [];
 		var scope = this;
